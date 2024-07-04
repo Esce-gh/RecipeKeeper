@@ -1,5 +1,8 @@
 package com.example.recipekeeper.scraper;
 
+import android.app.Activity;
+import android.widget.Toast;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,12 +14,21 @@ public class Scraper {
     private Document doc;
     private ArrayList<IngredientsGroup> ingredientsGroups = new ArrayList<>();
     private ArrayList<Ingredient> ingredientsList = new ArrayList<>();
+    private String title = "";
+    private final String url;
 
-    public Scraper(String url) {
-        try {
-            doc = Jsoup.connect(url).get();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public Scraper(String link, Activity activity) {
+        this.url = link;
+        if (!url.isEmpty()){
+            try {
+                doc = Jsoup.connect(url).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+                activity.runOnUiThread(() -> {
+                            Toast.makeText(activity, "Failed to connect", Toast.LENGTH_SHORT).show();
+                        }
+                );
+            }
         }
 
         if (doc != null) {
@@ -39,6 +51,11 @@ public class Scraper {
                 ingredientsList.add(extractIngredient(i));
             }
             ingredientsGroups.add(group);
+        }
+
+        Elements name = doc.getElementsByClass("wprm-recipe-name");
+        if (!name.isEmpty()) {
+            this.title = Jsoup.parse(name.get(0).html()).text();
         }
     }
 
@@ -66,5 +83,13 @@ public class Scraper {
 
     public ArrayList<Ingredient> getIngredientsList() {
         return ingredientsList;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

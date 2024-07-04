@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.R
 import com.example.recipekeeper.scraper.Ingredient
+import com.example.recipekeeper.scraper.Scraper
+import com.google.android.material.textfield.TextInputEditText
 
 class AddConfirmationActivity : AppCompatActivity() {
     private lateinit var editItemLauncher: ActivityResultLauncher<Intent>
@@ -24,6 +27,22 @@ class AddConfirmationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_confirmation)
 
+        val textInputTitle: TextInputEditText = findViewById(R.id.textInputTitle)
+        val textInputURL: TextInputEditText = findViewById(R.id.textInputURL)
+        val buttonConfirm: Button = findViewById(R.id.buttonConfirm)
+        val buttonAdd: Button = findViewById(R.id.buttonAdd)
+
+        val title = intent.getStringExtra("TITLE")
+        val url = intent.getStringExtra("URL")
+        textInputTitle.setText(title)
+        textInputURL.setText(url)
+
+        buttonAdd.setOnClickListener {
+            val item = Ingredient()
+            items.add(item)
+            EditIntent(items.size - 1, item)
+        }
+
         val data = intent.getSerializableExtra("DATA", ArrayList::class.java)
         if (data != null) {
             for (a in data) {
@@ -34,13 +53,7 @@ class AddConfirmationActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewIngredients)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ItemAdapter(items) { item, position ->
-            val intent = Intent(this, EditActivity::class.java).apply {
-                putExtra("ITEM_POSITION", position)
-                putExtra("ITEM_UNIT", item.unit)
-                putExtra("ITEM_NAME", item.name)
-                putExtra("ITEM_AMOUNT", item.amount)
-            }
-            editItemLauncher.launch(intent)
+            EditIntent(position, item)
         }
         recyclerView.adapter = adapter
 
@@ -57,6 +70,16 @@ class AddConfirmationActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+
+    private fun EditIntent(position: Int, item: Ingredient) {
+        val intent = Intent(this, EditActivity::class.java).apply {
+            putExtra("ITEM_POSITION", position)
+            putExtra("ITEM_UNIT", item.unit)
+            putExtra("ITEM_NAME", item.name)
+            putExtra("ITEM_AMOUNT", item.amount)
+        }
+        editItemLauncher.launch(intent)
     }
 
     private fun updateItem(

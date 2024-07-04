@@ -2,31 +2,32 @@ package com.example.recipekeeper.scraper;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable
-{
+public class Ingredient implements Serializable {
     private String amount;
     private String unit;
     private String name;
 
-    public Ingredient(String amount, String unit, String name)
-    {
+    public Ingredient(String amount, String unit, String name) {
         this.amount = amount;
         this.unit = unit;
         this.name = name;
     }
 
-    public String getAmount()
-    {
+    public Ingredient() {
+        amount = "";
+        unit = "";
+        name = "";
+    }
+
+    public String getAmount() {
         return amount;
     }
 
-    public String getUnit()
-    {
+    public String getUnit() {
         return unit;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
