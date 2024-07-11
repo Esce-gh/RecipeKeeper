@@ -17,6 +17,8 @@
         <activity android:name=".activities.AddActivity" />
         <activity android:name=".activities.EditActivity" />
         <activity android:name=".activities.AddConfirmationActivity" />
+        <activity android:name=".activities.RecipeActivity" />
+        <activity android:name=".activities.SearchActivity" />
         <activity
             android:name=".activities.MainActivity"
             android:exported="true">

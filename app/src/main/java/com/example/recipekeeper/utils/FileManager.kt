@@ -26,9 +26,9 @@ class FileManager {
             }
         }
 
-        fun loadRecipes(context: Context): List<Recipe> {
+        fun loadRecipes(context: Context): ArrayList<Recipe> {
             val fileName: String = context.getString(R.string.recipeDataFile)
-            val recipes = mutableListOf<Recipe>()
+            val recipes = arrayListOf<Recipe>()
             try {
                 val fileInputStream = context.openFileInput(fileName)
                 val objectInputStream = ObjectInputStream(fileInputStream)

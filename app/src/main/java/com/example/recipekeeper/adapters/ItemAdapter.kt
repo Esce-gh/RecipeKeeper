@@ -13,6 +13,10 @@ class ItemAdapter(
     private val ingredients: ArrayList<Ingredient>,
     private val onEditClick: (Ingredient, Int) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+    companion object {
+
+    }
+
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemText: TextView = itemView.findViewById(R.id.textViewIngredient)
         val buttonEdit: Button = itemView.findViewById(R.id.buttonEdit)

@@ -33,21 +33,26 @@ class AddConfirmationActivity : AppCompatActivity() {
         val buttonConfirm: Button = findViewById(R.id.buttonConfirm)
         val buttonAdd: Button = findViewById(R.id.buttonAdd)
 
+        // set the tile and url
         val title = intent.getStringExtra("TITLE") ?: ""
         val url = intent.getStringExtra("URL") ?: ""
         textInputTitle.setText(title)
         textInputURL.setText(url)
 
+        // button that adds new ingredient
         buttonAdd.setOnClickListener {
             val item = Ingredient()
             items.add(item)
             EditIntent(items.size - 1, item)
         }
 
+        // button that saves the recipe
+        // TODO: redirect
         buttonConfirm.setOnClickListener {
             FileManager.saveRecipe(this, Recipe(title, url, items))
         }
 
+        // load ingredient data from previous activity
         val data = intent.getSerializableExtra("DATA", ArrayList::class.java)
         if (data != null) {
             for (a in data) {
@@ -55,6 +60,7 @@ class AddConfirmationActivity : AppCompatActivity() {
             }
         }
 
+        // recycler view that hold ingredients list
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewIngredients)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = ItemAdapter(items) { item, position ->
@@ -77,6 +83,7 @@ class AddConfirmationActivity : AppCompatActivity() {
             }
     }
 
+    // TODO:
     private fun EditIntent(position: Int, item: Ingredient) {
         val intent = Intent(this, EditActivity::class.java).apply {
             putExtra("ITEM_POSITION", position)
