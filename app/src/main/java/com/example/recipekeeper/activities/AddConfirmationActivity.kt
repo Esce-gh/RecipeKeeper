@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.R
+import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.scraper.Ingredient
-import com.example.recipekeeper.scraper.Scraper
+import com.example.recipekeeper.utils.FileManager
 import com.google.android.material.textfield.TextInputEditText
 
 class AddConfirmationActivity : AppCompatActivity() {
@@ -32,8 +33,8 @@ class AddConfirmationActivity : AppCompatActivity() {
         val buttonConfirm: Button = findViewById(R.id.buttonConfirm)
         val buttonAdd: Button = findViewById(R.id.buttonAdd)
 
-        val title = intent.getStringExtra("TITLE")
-        val url = intent.getStringExtra("URL")
+        val title = intent.getStringExtra("TITLE") ?: ""
+        val url = intent.getStringExtra("URL") ?: ""
         textInputTitle.setText(title)
         textInputURL.setText(url)
 
@@ -41,6 +42,10 @@ class AddConfirmationActivity : AppCompatActivity() {
             val item = Ingredient()
             items.add(item)
             EditIntent(items.size - 1, item)
+        }
+
+        buttonConfirm.setOnClickListener {
+            FileManager.saveRecipe(this, Recipe(title, url, items))
         }
 
         val data = intent.getSerializableExtra("DATA", ArrayList::class.java)

@@ -44,8 +44,15 @@ public class Scraper {
         }
 
         for (Element e : ingredientsContainer) {
-            IngredientsGroup group = new IngredientsGroup(e.child(0).html());
-            Elements ingredients = e.child(1).children();
+            Elements ingredients = new Elements();
+            try {
+                ingredients = e.getElementsByClass("wprm-recipe-ingredients").get(0).children();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            String groupName = Jsoup.parse(e.getElementsByClass("wprm-recipe-group-name").html()).text();
+            IngredientsGroup group = new IngredientsGroup(groupName);
             for (Element i : ingredients) {
                 group.addIngredient(extractIngredient(i));
                 ingredientsList.add(extractIngredient(i));
