@@ -8,7 +8,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
+import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.scraper.Ingredient
 
 class RecipeActivity : AppCompatActivity( ){
@@ -36,5 +39,9 @@ class RecipeActivity : AppCompatActivity( ){
             intent.data = Uri.parse(url)
             startActivity(intent)
         }
+
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewIngredients)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = ItemAdapter(items)
     }
 }

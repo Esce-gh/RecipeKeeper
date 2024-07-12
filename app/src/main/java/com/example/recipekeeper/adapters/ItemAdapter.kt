@@ -11,17 +11,16 @@ import com.example.recipekeeper.scraper.Ingredient
 
 class ItemAdapter(
     private val ingredients: ArrayList<Ingredient>,
-    private val onEditClick: (Ingredient, Int) -> Unit
+    private val onEditClick: ((Ingredient, Int) -> Unit)?
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
-    companion object {
-
-    }
+    constructor(ingredients: ArrayList<Ingredient>) : this(ingredients, null)
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemText: TextView = itemView.findViewById(R.id.textViewIngredient)
         val buttonEdit: Button = itemView.findViewById(R.id.buttonEdit)
     }
 
+    // TODO: long texts won't display properly
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
             LayoutInflater.from(parent.context).inflate(
@@ -38,8 +37,12 @@ class ItemAdapter(
                 (if (item.unit.isEmpty()) "" else " ") +
                 item.name
         holder.itemText.text = text
-        holder.buttonEdit.setOnClickListener {
-            onEditClick(item, position)
+        if (onEditClick != null) {
+            holder.buttonEdit.setOnClickListener {
+                onEditClick.invoke(item, position)
+            }
+        } else {
+            holder.buttonEdit.visibility = View.INVISIBLE
         }
     }
 

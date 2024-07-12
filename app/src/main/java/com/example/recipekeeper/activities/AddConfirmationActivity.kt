@@ -77,7 +77,12 @@ class AddConfirmationActivity : AppCompatActivity() {
                         val itemName = it.getStringExtra("ITEM_NAME")
                         val itemAmount = it.getStringExtra("ITEM_AMOUNT")
                         val itemUnit = it.getStringExtra("ITEM_UNIT")
-                        updateItem(itemPosition, itemName, itemAmount, itemUnit)
+                        if (itemPosition != -1) {
+                            items[itemPosition].name = itemName ?: items[itemPosition].name
+                            items[itemPosition].unit = itemUnit ?: items[itemPosition].unit
+                            items[itemPosition].amount = itemAmount ?: items[itemPosition].amount
+                            adapter.notifyItemChanged(itemPosition)
+                        }
                     }
                 }
             }
@@ -92,19 +97,5 @@ class AddConfirmationActivity : AppCompatActivity() {
             putExtra("ITEM_AMOUNT", item.amount)
         }
         editItemLauncher.launch(intent)
-    }
-
-    private fun updateItem(
-        position: Int,
-        itemName: String?,
-        itemAmount: String?,
-        itemUnit: String?
-    ) {
-        if (position != -1) {
-            items[position].name = itemName ?: items[position].name
-            items[position].unit = itemUnit ?: items[position].unit
-            items[position].amount = itemAmount ?: items[position].amount
-            adapter.notifyItemChanged(position)
-        }
     }
 }
