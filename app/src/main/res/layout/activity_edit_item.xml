@@ -36,7 +36,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutTitle"
+        android:id="@+id/textInputLayoutName"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,5 +56,5 @@
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.ItemAdapter
+import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.scraper.Ingredient
+import com.example.recipekeeper.utils.FileManager
+import java.util.ArrayList
 
 class RecipeActivity : AppCompatActivity( ){
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -20,19 +23,13 @@ class RecipeActivity : AppCompatActivity( ){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
 
-        val title = intent.getStringExtra("TITLE") ?: ""
-        val url = intent.getStringExtra("URL") ?: ""
-        val items = ArrayList<Ingredient>()
+        val recipe = intent.getSerializableExtra("RECIPE", Recipe::class.java)
+        val name = recipe?.name ?: ""
+        val url = recipe?.url ?: ""
+        val items = recipe?.ingredients ?: ArrayList()
 
-        val data = intent.getSerializableExtra("DATA", ArrayList::class.java)
-        if (data != null) {
-            for (a in data) {
-                items.add(a as Ingredient)
-            }
-        }
-
-        val textViewTitle: TextView = findViewById(R.id.textViewTitle)
-        textViewTitle.text = title
+        val textViewName: TextView = findViewById(R.id.textViewName)
+        textViewName.text = name
         val buttonLink: Button = findViewById(R.id.buttonLink)
         buttonLink.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
@@ -43,5 +40,14 @@ class RecipeActivity : AppCompatActivity( ){
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewIngredients)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = ItemAdapter(items)
+
+        val buttonRemove: Button = findViewById(R.id.buttonRemove)
+        buttonRemove.setOnClickListener {
+            FileManager.deleteRecipe(this, name)
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
     }
 }

@@ -13,7 +13,7 @@ class RecipeAdapter(
     private val listener: (Recipe) -> Unit
 ) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     inner class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textViewTitle: TextView = view.findViewById(R.id.textViewRecipeName)
+        val textViewName: TextView = view.findViewById(R.id.textViewRecipeName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
@@ -26,7 +26,7 @@ class RecipeAdapter(
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
-        holder.textViewTitle.text = recipe.title
+        holder.textViewName.text = recipe.name
         holder.itemView.setOnClickListener { listener(recipe) }
     }
 

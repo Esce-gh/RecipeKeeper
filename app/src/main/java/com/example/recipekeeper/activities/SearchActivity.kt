@@ -2,6 +2,7 @@ package com.example.recipekeeper.activities
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,12 +24,18 @@ class SearchActivity : AppCompatActivity() {
         // TODO: add some info when no recipes are found
         val adapter = RecipeAdapter(recipeData) { recipe ->
             val intent = Intent(this, RecipeActivity::class.java).apply {
-                putExtra("TITLE", recipe.title)
-                putExtra("URL", recipe.url)
-                putExtra("DATA", recipe.ingredients)
+                putExtra("RECIPE", recipe)
             }
             startActivity(intent)
         }
         recyclerView.adapter = adapter
+
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(this@SearchActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        })
     }
 }

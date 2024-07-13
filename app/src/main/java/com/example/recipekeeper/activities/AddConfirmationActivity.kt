@@ -5,14 +5,15 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.R
+import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.scraper.Ingredient
 import com.example.recipekeeper.utils.FileManager
@@ -28,15 +29,15 @@ class AddConfirmationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_confirmation)
 
-        val textInputTitle: TextInputEditText = findViewById(R.id.textInputTitle)
+        val textInputName: TextInputEditText = findViewById(R.id.textInputName)
         val textInputURL: TextInputEditText = findViewById(R.id.textInputURL)
         val buttonConfirm: Button = findViewById(R.id.buttonConfirm)
         val buttonAdd: Button = findViewById(R.id.buttonAdd)
 
         // set the tile and url
-        val title = intent.getStringExtra("TITLE") ?: ""
+        val name = intent.getStringExtra("NAME") ?: ""
         val url = intent.getStringExtra("URL") ?: ""
-        textInputTitle.setText(title)
+        textInputName.setText(name)
         textInputURL.setText(url)
 
         // button that adds new ingredient
@@ -47,9 +48,18 @@ class AddConfirmationActivity : AppCompatActivity() {
         }
 
         // button that saves the recipe
-        // TODO: redirect
+        // TODO: check for same names
         buttonConfirm.setOnClickListener {
-            FileManager.saveRecipe(this, Recipe(title, url, items))
+            FileManager.saveRecipe(this, Recipe(name, url, items))
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            runOnUiThread(
+                Runnable {
+                    Toast.makeText(this, "Recipe added!", Toast.LENGTH_SHORT).show()
+                }
+            )
         }
 
         // load ingredient data from previous activity

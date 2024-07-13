@@ -47,5 +47,31 @@ class FileManager {
             }
             return recipes
         }
+
+        fun deleteRecipe(context: Context, recipeName: String) {
+            val recipes = loadRecipes(context)
+            val fileName: String = context.getString(R.string.recipeDataFile)
+            recipes.removeAll() { it.name == recipeName }
+
+            try {
+                val fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+                val objectOutputStream = ObjectOutputStream(fileOutputStream)
+                objectOutputStream.close()
+                fileOutputStream.close()
+
+                val fileOutputStreamAppend = context.openFileOutput(fileName, Context.MODE_APPEND)
+                val objectOutputStreamAppend = AppendObjectOutputStream(fileOutputStreamAppend)
+                for (recipe in recipes) {
+                    try {
+                        objectOutputStreamAppend.writeObject(recipe)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                fileOutputStreamAppend.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

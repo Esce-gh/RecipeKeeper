@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recipekeeper.R
 import com.example.recipekeeper.scraper.Scraper
@@ -29,11 +28,11 @@ class AddActivity : AppCompatActivity() {
                 val url = textInputURL.text.toString()
                 val scraper = Scraper(url, this)
                 val data = scraper.ingredientsList
-                val title = scraper.title
+                val name = scraper.name
                 myHandler.post {
                     val intent = Intent(this, AddConfirmationActivity::class.java).apply {
                         putExtra("DATA", data)
-                        putExtra("TITLE", title)
+                        putExtra("NAME", name)
                         putExtra("URL", url)
                     }
                     startActivity(intent)

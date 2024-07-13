@@ -14,7 +14,7 @@ public class Scraper {
     private Document doc;
     private ArrayList<IngredientsGroup> ingredientsGroups = new ArrayList<>();
     private ArrayList<Ingredient> ingredientsList = new ArrayList<>();
-    private String title = "";
+    private String name = "";
     private final String url;
 
     public Scraper(String link, Activity activity) {
@@ -62,7 +62,7 @@ public class Scraper {
 
         Elements name = doc.getElementsByClass("wprm-recipe-name");
         if (!name.isEmpty()) {
-            this.title = Jsoup.parse(name.get(0).html()).text();
+            this.name = Jsoup.parse(name.get(0).html()).text();
         }
     }
 
@@ -92,8 +92,8 @@ public class Scraper {
         return ingredientsList;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public String getUrl() {
