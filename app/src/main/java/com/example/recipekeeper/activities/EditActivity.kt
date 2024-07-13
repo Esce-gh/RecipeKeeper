@@ -1,6 +1,7 @@
 package com.example.recipekeeper.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -51,9 +52,12 @@ class EditActivity : AppCompatActivity() {
         }
 
         // button that saves the recipe
-        // TODO: check for same names
         buttonConfirm.setOnClickListener {
-            if (editMode) {
+            if (!editMode && !NameAvailable(this, textInputName.text.toString())) {
+                runOnUiThread {
+                    Toast.makeText(this, "Recipe with this name already exists!", Toast.LENGTH_SHORT).show()
+                }
+            } else if (editMode) {
                 FileManager.deleteRecipe(this, name)
                 FileManager.saveRecipe(
                     this,
@@ -111,7 +115,6 @@ class EditActivity : AppCompatActivity() {
             }
     }
 
-    // TODO:
     private fun EditIntent(position: Int, item: Ingredient) {
         val intent = Intent(this, EditIngredientActivity::class.java).apply {
             putExtra("ITEM_POSITION", position)
@@ -120,5 +123,15 @@ class EditActivity : AppCompatActivity() {
             putExtra("ITEM_AMOUNT", item.amount)
         }
         editItemLauncher.launch(intent)
+    }
+
+    private fun NameAvailable(context: Context, name: String): Boolean {
+        val recipes = FileManager.loadRecipes(context)
+        for (recipe in recipes) {
+            if (recipe.name == name) {
+                return false
+            }
+        }
+        return true
     }
 }

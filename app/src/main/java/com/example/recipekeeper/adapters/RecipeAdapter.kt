@@ -33,4 +33,10 @@ class RecipeAdapter(
     override fun getItemCount(): Int {
         return recipes.size
     }
+
+    fun updateRecipes(newRecipes: ArrayList<Recipe>) {
+        recipes.clear()
+        recipes.addAll(newRecipes)
+        notifyDataSetChanged()
+    }
 }
