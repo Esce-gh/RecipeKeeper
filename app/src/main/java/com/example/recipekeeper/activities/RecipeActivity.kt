@@ -15,6 +15,7 @@ import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.scraper.Ingredient
 import com.example.recipekeeper.utils.FileManager
+import com.example.recipekeeper.utils.Redirect
 import java.util.ArrayList
 
 class RecipeActivity : AppCompatActivity( ){
@@ -44,10 +45,18 @@ class RecipeActivity : AppCompatActivity( ){
         val buttonRemove: Button = findViewById(R.id.buttonRemove)
         buttonRemove.setOnClickListener {
             FileManager.deleteRecipe(this, name)
-            val intent = Intent(this, SearchActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            Redirect.redirect(this, SearchActivity::class.java)
+        }
+
+        val buttonEdit: Button = findViewById(R.id.buttonEdit)
+        buttonEdit.setOnClickListener {
+            val intent = Intent(this, EditActivity::class.java).apply {
+                putExtra("DATA", items)
+                putExtra("NAME", name)
+                putExtra("URL", url)
+                putExtra("EDIT", true)
+            }
             startActivity(intent)
-            finish()
         }
     }
 }

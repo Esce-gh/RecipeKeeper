@@ -30,7 +30,7 @@ class AddActivity : AppCompatActivity() {
                 val data = scraper.ingredientsList
                 val name = scraper.name
                 myHandler.post {
-                    val intent = Intent(this, AddConfirmationActivity::class.java).apply {
+                    val intent = Intent(this, EditActivity::class.java).apply {
                         putExtra("DATA", data)
                         putExtra("NAME", name)
                         putExtra("URL", url)
