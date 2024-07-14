@@ -29,7 +29,7 @@ class EditActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_confirmation)
+        setContentView(R.layout.activity_edit)
 
         val textInputName: TextInputEditText = findViewById(R.id.textInputName)
         val textInputURL: TextInputEditText = findViewById(R.id.textInputURL)
@@ -101,6 +101,12 @@ class EditActivity : AppCompatActivity() {
                     val data = result.data
                     data?.let {
                         val itemPosition = it.getIntExtra("ITEM_POSITION", -1)
+                        val itemRemove = it.getBooleanExtra("ITEM_REMOVE", false)
+                        if (itemRemove) {
+                            adapter.removeItem(itemPosition)
+                            return@let
+                        }
+
                         val itemName = it.getStringExtra("ITEM_NAME")
                         val itemAmount = it.getStringExtra("ITEM_AMOUNT")
                         val itemUnit = it.getStringExtra("ITEM_UNIT")
@@ -111,6 +117,10 @@ class EditActivity : AppCompatActivity() {
                             adapter.notifyItemChanged(itemPosition)
                         }
                     }
+                }
+                else if (result.resultCode == Activity.RESULT_CANCELED) {
+                    val itemPosition = items.size - 1
+                    adapter.removeItem(itemPosition)
                 }
             }
     }

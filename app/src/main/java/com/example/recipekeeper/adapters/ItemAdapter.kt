@@ -49,4 +49,10 @@ class ItemAdapter(
     override fun getItemCount(): Int {
         return ingredients.size
     }
+
+    fun removeItem(position: Int) {
+        ingredients.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, ingredients.size)
+    }
 }

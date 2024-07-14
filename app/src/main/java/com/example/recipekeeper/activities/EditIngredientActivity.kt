@@ -22,6 +22,7 @@ class EditIngredientActivity : AppCompatActivity() {
         val textInputAmount = findViewById<TextInputEditText>(R.id.textInputAmount)
         val textInputUnit = findViewById<TextInputEditText>(R.id.textInputUnit)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
+        val buttonDelete = findViewById<Button>(R.id.buttonDelete)
 
         textInputName.setText(itemName)
         textInputAmount.setText(itemAmount)
@@ -38,6 +39,14 @@ class EditIngredientActivity : AppCompatActivity() {
             resultIntent.putExtra("ITEM_UNIT", newUnit)
             resultIntent.putExtra("ITEM_POSITION", itemPosition)
 
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
+
+        buttonDelete.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("ITEM_POSITION", itemPosition)
+            resultIntent.putExtra("ITEM_REMOVE", true)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
