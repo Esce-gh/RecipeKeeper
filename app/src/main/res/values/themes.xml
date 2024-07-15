@@ -5,5 +5,9 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="Toolbar.TitleText" parent="@style/Base.TextAppearance.AppCompat.Title">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="Theme.RecipeKeeper" parent="Base.Theme.RecipeKeeper" />
 </resources>
