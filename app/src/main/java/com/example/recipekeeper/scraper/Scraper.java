@@ -20,16 +20,8 @@ public class Scraper {
 
     public Scraper(String link) throws Exception {
         this.url = link;
-        if (!url.isEmpty()){
-//            try {
+        if (!url.isEmpty()) {
             doc = Jsoup.connect(url).get();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                activity.runOnUiThread(() -> {
-//                            Toast.makeText(activity, "Failed to connect", Toast.LENGTH_SHORT).show();
-//                        }
-//                );
-//            }
         }
 
         if (doc != null) {
@@ -48,8 +40,7 @@ public class Scraper {
             Elements ingredients = new Elements();
             try {
                 ingredients = e.getElementsByClass("wprm-recipe-ingredients").get(0).children();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
             String groupName = Jsoup.parse(e.getElementsByClass("wprm-recipe-group-name").html()).text();

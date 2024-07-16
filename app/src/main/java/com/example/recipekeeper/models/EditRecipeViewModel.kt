@@ -13,6 +13,10 @@ class EditRecipeViewModel : ViewModel() {
     val url: LiveData<String> get() = _url
     private val _items = MutableLiveData<ArrayList<Ingredient>>()
     val items: LiveData<ArrayList<Ingredient>> get() = _items
+    private val _instructions = MutableLiveData<String>()
+    val instructions: LiveData<String> get() = _instructions
+    private val _notes = MutableLiveData<String>()
+    val notes: LiveData<String> get() = _notes
 
     var scrapedItems: ArrayList<Ingredient> = ArrayList()
     var scrapedName: String = ""
@@ -47,14 +51,6 @@ class EditRecipeViewModel : ViewModel() {
         _items.value = scrapedItems
     }
 
-    fun setName(newName: String) {
-        _name.value = newName
-    }
-
-    fun setUrl(newUrl: String) {
-        _url.value = newUrl
-    }
-
     fun importURL(importUrl: String) {
         var scraper: Scraper? = null
         try {
@@ -68,5 +64,21 @@ class EditRecipeViewModel : ViewModel() {
             scrapedName = scraper.name
             scrapedUrl = importUrl
         }
+    }
+
+    fun setName(newName: String) {
+        _name.value = newName
+    }
+
+    fun setUrl(newUrl: String) {
+        _url.value = newUrl
+    }
+
+    fun setInstructions(newInstructions: String) {
+        _instructions.value = newInstructions
+    }
+
+    fun setNotes(newNotes: String) {
+        _notes.value = newNotes
     }
 }

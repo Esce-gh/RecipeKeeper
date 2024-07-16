@@ -46,6 +46,7 @@ class EditActivity : AppCompatActivity() {
                 0 -> "Details"
                 1 -> "Ingredients"
                 2 -> "Instructions"
+                3 -> "Notes"
                 else -> ""
             }
         }.attach()
