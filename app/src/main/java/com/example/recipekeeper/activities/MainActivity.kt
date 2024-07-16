@@ -13,6 +13,7 @@ import com.example.recipekeeper.R
 // - hold and select recipes/ingredients to remove
 // - some easier way to input recipes manually
 // - add tags after you press enter in the search bar
+// - remove AddActivity - instead open EditActivity and give an option to import from website
 //
 // Features:
 // - add recipe instructions
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity()
 
         val buttonAdd: Button = findViewById(R.id.buttonAdd)
         buttonAdd.setOnClickListener {
-            val intent = Intent(this, AddActivity::class.java)
+            val intent = Intent(this, EditActivity::class.java)
             startActivity(intent)
         }
 
