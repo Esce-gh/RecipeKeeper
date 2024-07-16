@@ -1,147 +1,112 @@
 package com.example.recipekeeper.activities
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.EditText
+import androidx.appcompat.widget.Toolbar
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
-import com.example.recipekeeper.adapters.ItemAdapter
-import com.example.recipekeeper.models.Recipe
+import com.example.recipekeeper.adapters.EditPagerAdapter
+import com.example.recipekeeper.models.EditRecipeViewModel
 import com.example.recipekeeper.scraper.Ingredient
-import com.example.recipekeeper.utils.FileManager
-import com.example.recipekeeper.utils.Redirect
-import com.google.android.material.textfield.TextInputEditText
+import com.example.recipekeeper.utils.ToolbarUtil
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import java.util.concurrent.Executors
 
 class EditActivity : AppCompatActivity() {
-    private lateinit var editItemLauncher: ActivityResultLauncher<Intent>
-    private lateinit var adapter: ItemAdapter
-    private var items = ArrayList<Ingredient>()
+    private val viewModel: EditRecipeViewModel by viewModels()
+    private val myExecutor = Executors.newSingleThreadExecutor()
+    private val myHandler = Handler(Looper.getMainLooper())
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        val textInputName: TextInputEditText = findViewById(R.id.textInputName)
-        val textInputURL: TextInputEditText = findViewById(R.id.textInputURL)
-        val buttonConfirm: Button = findViewById(R.id.buttonConfirm)
-        val buttonAdd: Button = findViewById(R.id.buttonAdd)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        ToolbarUtil.InitializeToolbar(this, toolbar, "Edit recipe")
+
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
+        val tabLayout: TabLayout = findViewById(R.id.tabLayout)
+        val pagerAdapter = EditPagerAdapter(this)
+        viewPager.adapter = pagerAdapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Details"
+                1 -> "Ingredients"
+                2 -> "Instructions"
+                else -> ""
+            }
+        }.attach()
 
         val editMode = intent.getBooleanExtra("EDIT", false)
-
-        // set the tile and url
-        val name = intent.getStringExtra("NAME") ?: ""
-        val url = intent.getStringExtra("URL") ?: ""
-        textInputName.setText(name)
-        textInputURL.setText(url)
-
-        // button that adds new ingredient
-        buttonAdd.setOnClickListener {
-            val item = Ingredient()
-            items.add(item)
-            EditIntent(items.size - 1, item)
-        }
-
-        // button that saves the recipe
-        buttonConfirm.setOnClickListener {
-            if (!editMode && !NameAvailable(this, textInputName.text.toString())) {
-                runOnUiThread {
-                    Toast.makeText(this, "Recipe with this name already exists!", Toast.LENGTH_SHORT).show()
-                }
-            } else if (editMode) {
-                FileManager.deleteRecipe(this, name)
-                FileManager.saveRecipe(
-                    this,
-                    Recipe(textInputName.text.toString(), textInputURL.text.toString(), items)
-                )
-                Redirect.redirect(this, SearchActivity::class.java)
-                runOnUiThread {
-                    Toast.makeText(this, "Recipe modified!", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                FileManager.saveRecipe(
-                    this,
-                    Recipe(textInputName.text.toString(), textInputURL.text.toString(), items)
-                )
-                Redirect.redirect(this, MainActivity::class.java)
-                runOnUiThread {
-                    Toast.makeText(this, "Recipe added!", Toast.LENGTH_SHORT).show()
+        if (editMode) {
+            val name = intent.getStringExtra("NAME") ?: ""
+            val url = intent.getStringExtra("URL") ?: ""
+            viewModel.setName(name)
+            viewModel.setUrl(url)
+            viewModel.editMode = true
+            // load ingredient data from previous activity
+            val data = intent.getSerializableExtra("DATA", ArrayList::class.java)
+            if (data != null) {
+                for (a in data) {
+                    viewModel.addItem(a as Ingredient)
                 }
             }
         }
-
-        // load ingredient data from previous activity
-        val data = intent.getSerializableExtra("DATA", ArrayList::class.java)
-        if (data != null) {
-            for (a in data) {
-                items.add(a as Ingredient)
-            }
-        }
-
-        // recycler view that hold ingredients list
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewIngredients)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = ItemAdapter(items) { item, position ->
-            EditIntent(position, item)
-        }
-        recyclerView.adapter = adapter
-
-        editItemLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data = result.data
-                    data?.let {
-                        val itemPosition = it.getIntExtra("ITEM_POSITION", -1)
-                        val itemRemove = it.getBooleanExtra("ITEM_REMOVE", false)
-                        if (itemRemove) {
-                            adapter.removeItem(itemPosition)
-                            return@let
-                        }
-
-                        val itemName = it.getStringExtra("ITEM_NAME")
-                        val itemAmount = it.getStringExtra("ITEM_AMOUNT")
-                        val itemUnit = it.getStringExtra("ITEM_UNIT")
-                        if (itemPosition != -1) {
-                            items[itemPosition].name = itemName ?: items[itemPosition].name
-                            items[itemPosition].unit = itemUnit ?: items[itemPosition].unit
-                            items[itemPosition].amount = itemAmount ?: items[itemPosition].amount
-                            adapter.notifyItemChanged(itemPosition)
-                        }
-                    }
-                }
-                else if (result.resultCode == Activity.RESULT_CANCELED) {
-                    val itemPosition = items.size - 1
-                    adapter.removeItem(itemPosition)
-                }
-            }
     }
 
-    private fun EditIntent(position: Int, item: Ingredient) {
-        val intent = Intent(this, EditIngredientActivity::class.java).apply {
-            putExtra("ITEM_POSITION", position)
-            putExtra("ITEM_UNIT", item.unit)
-            putExtra("ITEM_NAME", item.name)
-            putExtra("ITEM_AMOUNT", item.amount)
-        }
-        editItemLauncher.launch(intent)
-    }
+    private fun showImportDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_import_url, null)
+        val editTextURL: EditText = dialogView.findViewById(R.id.editTextURL)
+        val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
+        val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)
 
-    private fun NameAvailable(context: Context, name: String): Boolean {
-        val recipes = FileManager.loadRecipes(context)
-        for (recipe in recipes) {
-            if (recipe.name == name) {
-                return false
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        buttonCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        buttonOK.setOnClickListener {
+            val url = editTextURL.text.toString()
+            myExecutor.execute {
+                viewModel.importURL(url)
+                myHandler.post {
+                    viewModel.refreshValues()
+                    dialog.dismiss()
+                }
             }
         }
+
+        dialog.show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.edit_recipe_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.actionImport -> {
+                showImportDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

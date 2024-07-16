@@ -10,7 +10,7 @@ import com.example.recipekeeper.fragments.NotesFragment
 import com.example.recipekeeper.scraper.Ingredient
 
 class RecipePagerAdapter(fragmentActivity: FragmentActivity, val items: ArrayList<Ingredient>) : FragmentStateAdapter(fragmentActivity) {
-    override fun getItemCount(): Int = 3  // Number of fragments
+    override fun getItemCount(): Int = 3
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> IngredientsFragment(items)

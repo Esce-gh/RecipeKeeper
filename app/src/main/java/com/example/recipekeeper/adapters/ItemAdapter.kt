@@ -10,7 +10,7 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.scraper.Ingredient
 
 class ItemAdapter(
-    private val ingredients: ArrayList<Ingredient>,
+    private val items: ArrayList<Ingredient>,
     private val onEditClick: ((Ingredient, Int) -> Unit)?
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
     constructor(ingredients: ArrayList<Ingredient>) : this(ingredients, null)
@@ -30,7 +30,7 @@ class ItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = ingredients[position]
+        val item = items[position]
         val text = item.amount +
                 (if (item.amount.isEmpty()) "" else " ") +
                 item.unit +
@@ -47,12 +47,12 @@ class ItemAdapter(
     }
 
     override fun getItemCount(): Int {
-        return ingredients.size
+        return items.size
     }
 
-    fun removeItem(position: Int) {
-        ingredients.removeAt(position)
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(position, ingredients.size)
+    fun updateItems(newItems: ArrayList<Ingredient>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
 }

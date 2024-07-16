@@ -6,24 +6,18 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
-import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.adapters.RecipePagerAdapter
 import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.scraper.Ingredient
 import com.example.recipekeeper.utils.FileManager
 import com.example.recipekeeper.utils.Redirect
+import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -43,18 +37,10 @@ class RecipeActivity : AppCompatActivity() {
         items = recipe?.ingredients ?: ArrayList()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
-            title = name
-        }
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
+        ToolbarUtil.InitializeToolbar(this, toolbar, name)
 
-        val viewPager: ViewPager2 = findViewById(R.id.view_pager)
-        val tabLayout: TabLayout = findViewById(R.id.tab_layout)
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
+        val tabLayout: TabLayout = findViewById(R.id.tabLayout)
         val pagerAdapter = RecipePagerAdapter(this, items)
         viewPager.adapter = pagerAdapter
 

@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Scraper {
@@ -17,18 +18,18 @@ public class Scraper {
     private String name = "";
     private final String url;
 
-    public Scraper(String link, Activity activity) {
+    public Scraper(String link) throws Exception {
         this.url = link;
         if (!url.isEmpty()){
-            try {
-                doc = Jsoup.connect(url).get();
-            } catch (Exception e) {
-                e.printStackTrace();
-                activity.runOnUiThread(() -> {
-                            Toast.makeText(activity, "Failed to connect", Toast.LENGTH_SHORT).show();
-                        }
-                );
-            }
+//            try {
+            doc = Jsoup.connect(url).get();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                activity.runOnUiThread(() -> {
+//                            Toast.makeText(activity, "Failed to connect", Toast.LENGTH_SHORT).show();
+//                        }
+//                );
+//            }
         }
 
         if (doc != null) {
