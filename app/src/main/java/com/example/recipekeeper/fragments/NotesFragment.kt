@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.recipekeeper.R
 import com.example.recipekeeper.models.RecipeViewModel
 
@@ -23,6 +24,8 @@ class NotesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val textView: TextView = view.findViewById(R.id.textView)
-        textView.setText(viewModel.recipe.notes)
+        viewModel.recipe.observe(viewLifecycleOwner) { recipe ->
+            textView.text = recipe?.notes ?: ""
+        }
     }
 }

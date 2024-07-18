@@ -45,6 +45,7 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
     var scrapedName: String = ""
     var scrapedUrl: String = ""
     var editMode: Boolean = false
+    var recipeID: Int? = null
 
     fun addItem(item: String) {
         val currentItems = _items.value ?: ArrayList()
@@ -87,13 +88,14 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    fun loadRecipe(recipe: Recipe) {
-        _name.value = recipe.name
-        _url.value = recipe.url
-        _instructions.value = recipe.instructions
-        _notes.value = recipe.notes
-        _items.value = recipe.ingredients
+    fun loadRecipe(id: Int) = viewModelScope.launch {
         editMode = true
+        val fetchedRecipe = recipeDao.getRecipeById(id)
+        _name.value = fetchedRecipe?.name
+        _url.value = fetchedRecipe?.url
+        _instructions.value = fetchedRecipe?.instructions
+        _notes.value = fetchedRecipe?.notes
+        _items.value = fetchedRecipe?.ingredients
     }
 
     fun setName(newName: String) {

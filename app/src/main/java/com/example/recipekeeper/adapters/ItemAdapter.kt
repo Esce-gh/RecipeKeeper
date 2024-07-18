@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 
 class ItemAdapter(
-    private val items: ArrayList<String>,
+    private var items: ArrayList<String>,
     private val onEditClick: ((String, Int) -> Unit)?
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
     constructor(ingredients: ArrayList<String>) : this(ingredients, null)
@@ -45,8 +45,7 @@ class ItemAdapter(
     }
 
     fun updateItems(newItems: ArrayList<String>) {
-        items.clear()
-        items.addAll(newItems)
+        items = newItems
         notifyDataSetChanged()
     }
 }

@@ -18,8 +18,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
+import com.example.recipekeeper.models.ApplicationViewModelFactory
 import com.example.recipekeeper.models.EditRecipeViewModel
-import com.example.recipekeeper.models.EditRecipeViewModelFactory
 import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout
@@ -36,7 +36,7 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-        val viewModelFactory = EditRecipeViewModelFactory(application)
+        val viewModelFactory = ApplicationViewModelFactory(application, EditRecipeViewModel::class)
         try {
             viewModel = ViewModelProvider(this, viewModelFactory).get(EditRecipeViewModel::class.java)
         } catch (e: Exception){
@@ -62,8 +62,8 @@ class EditActivity : AppCompatActivity() {
 
         val editMode = intent.getBooleanExtra(getString(R.string.extra_edit_mode), false)
         if (editMode) {
-            val recipe = intent.getSerializableExtra(getString(R.string.extra_recipe), Recipe::class.java)
-            viewModel.loadRecipe(recipe ?: Recipe())
+            val recipeID = intent.getIntExtra(getString(R.string.extra_recipe_id), -1)
+            viewModel.loadRecipe(recipeID)
         }
     }
 
@@ -83,6 +83,8 @@ class EditActivity : AppCompatActivity() {
 
         buttonOK.setOnClickListener {
             val url = editTextURL.text.toString()
+            viewModel.importURL(url)
+            dialog.dismiss()
             myExecutor.execute {
                 viewModel.importURL(url)
                 myHandler.post {

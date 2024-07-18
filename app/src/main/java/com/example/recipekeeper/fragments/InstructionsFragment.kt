@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
@@ -26,6 +27,8 @@ class InstructionsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val textView: TextView = view.findViewById(R.id.textView)
-        textView.setText(viewModel.recipe.instructions)
+        viewModel.recipe.observe(viewLifecycleOwner) { recipe ->
+            textView.text = recipe?.instructions ?: ""
+        }
     }
 }
