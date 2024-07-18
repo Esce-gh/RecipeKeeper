@@ -50,13 +50,23 @@ class DetailsEditFragment() : Fragment() {
                 // check if recipe with same name already exists
                 if (!viewModel.editMode && !NameAvailable(con, textInputName.text.toString())) {
                     activity?.runOnUiThread {
-                        Toast.makeText(con, "Recipe with this name already exists!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            con,
+                            "Recipe with this name already exists!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else if (viewModel.editMode) { // check if existing recipe is being changed
                     FileManager.deleteRecipe(con, viewModel.name.value ?: "")
                     FileManager.saveRecipe(
                         con,
-                        Recipe(textInputName.text.toString(), textInputURL.text.toString(), viewModel.items.value ?: ArrayList())
+                        Recipe(
+                            textInputName.text.toString(),
+                            textInputURL.text.toString(),
+                            viewModel.items.value ?: ArrayList(),
+                            viewModel.instructions.value ?: "",
+                            viewModel.notes.value ?: ""
+                        )
                     )
                     Redirect.redirect(con, SearchActivity::class.java)
                     activity?.runOnUiThread {
@@ -65,7 +75,13 @@ class DetailsEditFragment() : Fragment() {
                 } else {
                     FileManager.saveRecipe(
                         con,
-                        Recipe(textInputName.text.toString(), textInputURL.text.toString(), viewModel.items.value ?: ArrayList())
+                        Recipe(
+                            textInputName.text.toString(),
+                            textInputURL.text.toString(),
+                            viewModel.items.value ?: ArrayList(),
+                            viewModel.instructions.value ?: "",
+                            viewModel.notes.value ?: ""
+                        )
                     )
                     Redirect.redirect(con, MainActivity::class.java)
                     activity?.runOnUiThread {

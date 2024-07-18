@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream
 class FileManager {
     companion object {
         fun saveRecipe(context: Context, recipe: Recipe) {
-            val fileName: String = context.getString(R.string.recipeDataFile)
+            val fileName: String = context.getString(R.string.recipe_data_file)
             try {
                 val append = context.getFileStreamPath(fileName).exists()
                 val fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND)
@@ -27,7 +27,7 @@ class FileManager {
         }
 
         fun loadRecipes(context: Context): ArrayList<Recipe> {
-            val fileName: String = context.getString(R.string.recipeDataFile)
+            val fileName: String = context.getString(R.string.recipe_data_file)
             val recipes = arrayListOf<Recipe>()
             try {
                 val fileInputStream = context.openFileInput(fileName)
@@ -50,7 +50,7 @@ class FileManager {
 
         fun deleteRecipe(context: Context, recipeName: String) {
             val recipes = loadRecipes(context)
-            val fileName: String = context.getString(R.string.recipeDataFile)
+            val fileName: String = context.getString(R.string.recipe_data_file)
             recipes.removeAll() { it.name == recipeName }
 
             try {

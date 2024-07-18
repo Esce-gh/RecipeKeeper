@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
 import com.example.recipekeeper.models.EditRecipeViewModel
+import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.scraper.Ingredient
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout
@@ -35,7 +36,7 @@ class EditActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        ToolbarUtil.InitializeToolbar(this, toolbar, "Edit recipe")
+        ToolbarUtil.InitializeToolbar(this, toolbar, getString(R.string.edit_recipe_title))
 
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
@@ -43,28 +44,18 @@ class EditActivity : AppCompatActivity() {
         viewPager.adapter = pagerAdapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> "Details"
-                1 -> "Ingredients"
-                2 -> "Instructions"
-                3 -> "Notes"
+                0 -> getString(R.string.edit_pager_details)
+                1 -> getString(R.string.edit_pager_ingredients)
+                2 -> getString(R.string.edit_pager_instructions)
+                3 -> getString(R.string.edit_pager_notes)
                 else -> ""
             }
         }.attach()
 
-        val editMode = intent.getBooleanExtra("EDIT", false)
+        val editMode = intent.getBooleanExtra(getString(R.string.extra_edit_mode), false)
         if (editMode) {
-            val name = intent.getStringExtra("NAME") ?: ""
-            val url = intent.getStringExtra("URL") ?: ""
-            viewModel.setName(name)
-            viewModel.setUrl(url)
-            viewModel.editMode = true
-            // load ingredient data from previous activity
-            val data = intent.getSerializableExtra("DATA", ArrayList::class.java)
-            if (data != null) {
-                for (a in data) {
-                    viewModel.addItem(a as Ingredient)
-                }
-            }
+            val recipe = intent.getSerializableExtra(getString(R.string.extra_recipe), Recipe::class.java)
+            viewModel.loadRecipe(recipe ?: Recipe())
         }
     }
 

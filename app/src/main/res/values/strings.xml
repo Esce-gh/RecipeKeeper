@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">RecipeKeeper</string>
-    <string name="recipeDataFile">recipes.dat</string>
+    <string name="recipe_data_file">recipes.dat</string>
+    <string name="edit_recipe_title">Edit recipe</string>
+
+    <string name="edit_pager_details">Details</string>
+    <string name="edit_pager_ingredients">Ingredients</string>
+    <string name="edit_pager_instructions">Instructions</string>
+    <string name="edit_pager_notes">Notes</string>
+
+    <string name="extra_edit_mode">EDIT</string>
+    <string name="extra_recipe">RECIPE</string>
 </resources>

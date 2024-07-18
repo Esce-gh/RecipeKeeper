@@ -66,6 +66,15 @@ class EditRecipeViewModel : ViewModel() {
         }
     }
 
+    fun loadRecipe(recipe: Recipe) {
+        _name.value = recipe.name
+        _url.value = recipe.url
+        _instructions.value = recipe.instructions
+        _notes.value = recipe.notes
+        _items.value = recipe.ingredients
+        editMode = true
+    }
+
     fun setName(newName: String) {
         _name.value = newName
     }

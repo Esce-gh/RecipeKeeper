@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.ItemAdapter
+import com.example.recipekeeper.models.EditRecipeViewModel
+import com.example.recipekeeper.models.RecipeViewModel
 import com.example.recipekeeper.scraper.Ingredient
 
 
-class IngredientsFragment(val items: ArrayList<Ingredient>) : Fragment() {
+class IngredientsFragment() : Fragment() {
+    private val viewModel: RecipeViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +30,6 @@ class IngredientsFragment(val items: ArrayList<Ingredient>) : Fragment() {
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewIngredients)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = ItemAdapter(items)
+        recyclerView.adapter = ItemAdapter(viewModel.recipe.ingredients)
     }
 }

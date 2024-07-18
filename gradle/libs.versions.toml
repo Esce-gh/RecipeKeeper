@@ -12,6 +12,8 @@ constraintlayout = "2.1.4"
 lifecycleViewmodelKtx = "2.8.3"
 lifecycleLivedataKtx = "2.8.3"
 fragmentKtx = "1.8.1"
+roomRuntime = "2.6.1"
+roomCompilerVersion = "2.6.1"
 
 [libraries]
 jsoup = { group = "org.jsoup", name = "jsoup", version = "1.14.3" }
@@ -26,6 +28,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompilerVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

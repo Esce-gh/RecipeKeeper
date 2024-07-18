@@ -15,7 +15,6 @@ import com.example.recipekeeper.R
 // - add tags after you press enter in the search bar
 //
 // Features:
-// - add recipe instructions
 // - ingredient/instruction groups
 // - sorting search results
 //
