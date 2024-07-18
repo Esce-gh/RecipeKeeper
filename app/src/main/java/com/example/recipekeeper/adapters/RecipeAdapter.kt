@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.data.RecipeEntity
-import com.example.recipekeeper.models.Recipe
 
 class RecipeAdapter(
     private val listener: (RecipeEntity) -> Unit

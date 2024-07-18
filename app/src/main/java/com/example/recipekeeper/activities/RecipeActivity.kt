@@ -17,10 +17,8 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipePagerAdapter
 import com.example.recipekeeper.data.RecipeEntity
 import com.example.recipekeeper.models.ApplicationViewModelFactory
-import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.models.RecipeViewModel
 import com.example.recipekeeper.models.SearchViewModel
-import com.example.recipekeeper.utils.FileManager
 import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout

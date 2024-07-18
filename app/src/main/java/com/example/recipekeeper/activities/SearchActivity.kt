@@ -17,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipeAdapter
 import com.example.recipekeeper.models.ApplicationViewModelFactory
-import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.models.SearchViewModel
-import com.example.recipekeeper.utils.FileManager
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel

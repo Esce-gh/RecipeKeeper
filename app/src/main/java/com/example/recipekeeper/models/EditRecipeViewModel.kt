@@ -11,7 +11,9 @@ import com.example.recipekeeper.data.RecipeDao
 import com.example.recipekeeper.data.RecipeDatabase
 import com.example.recipekeeper.data.RecipeEntity
 import com.example.recipekeeper.scraper.Scraper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EditRecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val recipeDao: RecipeDao = RecipeDatabase.getDatabase(application).recipeDao()
@@ -58,9 +60,6 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
     private val _notes = MutableLiveData<String>()
     val notes: LiveData<String> get() = _notes
 
-    var scrapedItems: ArrayList<String> = ArrayList()
-    var scrapedName: String = ""
-    var scrapedUrl: String = ""
     var editMode: Boolean = false
     var recipeID: Int? = null
 
@@ -84,13 +83,7 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         _items.value = currentItems
     }
 
-    fun refreshValues() {
-        _name.value = scrapedName
-        _url.value = scrapedUrl
-        _items.value = scrapedItems
-    }
-
-    fun importURL(importUrl: String) {
+    fun importURL(importUrl: String){
         var scraper: Scraper? = null
         try {
             scraper = Scraper(importUrl)
@@ -99,9 +92,13 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
             e.printStackTrace()
         }
         if (scraper != null) {
-            scrapedItems = scraper.ingredientsList
-            scrapedName = scraper.name
-            scrapedUrl = importUrl
+            viewModelScope.launch {
+                withContext(Dispatchers.Main) {
+                    _name.value = scraper.name
+                    _url.value = importUrl
+                    _items.value = scraper.ingredientsList
+                }
+            }
         }
     }
 

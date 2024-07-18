@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
 import com.example.recipekeeper.models.ApplicationViewModelFactory
 import com.example.recipekeeper.models.EditRecipeViewModel
-import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -28,8 +26,8 @@ import java.util.concurrent.Executors
 
 class EditActivity : AppCompatActivity() {
     private lateinit var viewModel: EditRecipeViewModel
-    private val myExecutor = Executors.newSingleThreadExecutor()
-    private val myHandler = Handler(Looper.getMainLooper())
+    private val executor = Executors.newSingleThreadExecutor()
+    private val handler = Handler(Looper.getMainLooper())
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,15 +80,16 @@ class EditActivity : AppCompatActivity() {
         }
 
         buttonOK.setOnClickListener {
-            val url = editTextURL.text.toString()
-            viewModel.importURL(url)
-            dialog.dismiss()
-            myExecutor.execute {
-                viewModel.importURL(url)
-                myHandler.post {
-                    viewModel.refreshValues()
-                    dialog.dismiss()
+            try {
+                val url = editTextURL.text.toString()
+                executor.execute {
+                    viewModel.importURL(url)
+                    handler.post {
+                        dialog.dismiss()
+                    }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 

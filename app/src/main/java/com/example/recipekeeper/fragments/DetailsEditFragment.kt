@@ -2,6 +2,8 @@ package com.example.recipekeeper.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +16,6 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.activities.MainActivity
 import com.example.recipekeeper.activities.SearchActivity
 import com.example.recipekeeper.models.EditRecipeViewModel
-import com.example.recipekeeper.models.Recipe
-import com.example.recipekeeper.utils.FileManager
 import com.example.recipekeeper.utils.Redirect
 import com.google.android.material.textfield.TextInputEditText
 
@@ -34,6 +34,7 @@ class DetailsEditFragment() : Fragment() {
 
         val textInputName: TextInputEditText = view.findViewById(R.id.textInputName)
         val textInputURL: TextInputEditText = view.findViewById(R.id.textInputURL)
+
         viewModel.name.observe(viewLifecycleOwner, Observer { name ->
             textInputName.setText(name)
         })
@@ -78,13 +79,14 @@ class DetailsEditFragment() : Fragment() {
         }
     }
 
+    // TODO: fix
     private fun NameAvailable(context: Context, name: String): Boolean {
-        val recipes = FileManager.loadRecipes(context)
-        for (recipe in recipes) {
-            if (recipe.name == name) {
-                return false
-            }
-        }
+//        val recipes = FileManager.loadRecipes(context)
+//        for (recipe in recipes) {
+//            if (recipe.name == name) {
+//                return false
+//            }
+//        }
         return true
     }
 }
