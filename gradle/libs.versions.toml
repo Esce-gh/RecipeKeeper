@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.0"
+gson = "2.10.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -12,10 +13,13 @@ constraintlayout = "2.1.4"
 lifecycleViewmodelKtx = "2.8.3"
 lifecycleLivedataKtx = "2.8.3"
 fragmentKtx = "1.8.1"
+roomCompiler = "2.5.0"
 roomRuntime = "2.6.1"
 roomCompilerVersion = "2.6.1"
 
 [libraries]
+androidx-room-compiler-v250 = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jsoup = { group = "org.jsoup", name = "jsoup", version = "1.14.3" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

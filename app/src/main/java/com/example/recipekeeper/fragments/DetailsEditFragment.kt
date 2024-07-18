@@ -73,16 +73,19 @@ class DetailsEditFragment() : Fragment() {
                         Toast.makeText(con, "Recipe modified!", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    FileManager.saveRecipe(
-                        con,
-                        Recipe(
-                            textInputName.text.toString(),
-                            textInputURL.text.toString(),
-                            viewModel.items.value ?: ArrayList(),
-                            viewModel.instructions.value ?: "",
-                            viewModel.notes.value ?: ""
-                        )
-                    )
+//                    FileManager.saveRecipe(
+//                        con,
+//                        Recipe(
+//                            textInputName.text.toString(),
+//                            textInputURL.text.toString(),
+//                            viewModel.items.value ?: ArrayList(),
+//                            viewModel.instructions.value ?: "",
+//                            viewModel.notes.value ?: ""
+//                        )
+//                    )
+                    viewModel.setName(textInputName.text.toString())
+                    viewModel.setUrl(textInputURL.text.toString())
+                    viewModel.insertRecipe()
                     Redirect.redirect(con, MainActivity::class.java)
                     activity?.runOnUiThread {
                         Toast.makeText(con, "Recipe added!", Toast.LENGTH_SHORT).show()

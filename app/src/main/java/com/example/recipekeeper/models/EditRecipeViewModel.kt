@@ -1,11 +1,35 @@
 package com.example.recipekeeper.models
 
+import android.app.Application
+import android.widget.ArrayAdapter
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.recipekeeper.data.RecipeDao
+import com.example.recipekeeper.data.RecipeDatabase
+import com.example.recipekeeper.data.RecipeEntity
 import com.example.recipekeeper.scraper.Scraper
+import kotlinx.coroutines.launch
 
-class EditRecipeViewModel : ViewModel() {
+class EditRecipeViewModel(application: Application) : AndroidViewModel(application) {
+    private val recipeDao: RecipeDao = RecipeDatabase.getDatabase(application).recipeDao()
+
+    fun insertRecipe() {
+        viewModelScope.launch {
+            recipeDao.insert(
+                RecipeEntity(
+                    name = name.value ?: "",
+                    url = url.value ?: "",
+                    ingredients = items.value ?: ArrayList(),
+                    instructions = instructions.value ?: "",
+                    notes = notes.value ?: ""
+                )
+            )
+        }
+    }
+
     private val _name = MutableLiveData<String>()
     val name: LiveData<String> get() = _name
     private val _url = MutableLiveData<String>()

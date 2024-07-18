@@ -14,10 +14,12 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
 import com.example.recipekeeper.models.EditRecipeViewModel
+import com.example.recipekeeper.models.EditRecipeViewModelFactory
 import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout
@@ -25,7 +27,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.util.concurrent.Executors
 
 class EditActivity : AppCompatActivity() {
-    private val viewModel: EditRecipeViewModel by viewModels()
+    private lateinit var viewModel: EditRecipeViewModel
     private val myExecutor = Executors.newSingleThreadExecutor()
     private val myHandler = Handler(Looper.getMainLooper())
 
@@ -33,6 +35,13 @@ class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
+
+        val viewModelFactory = EditRecipeViewModelFactory(application)
+        try {
+            viewModel = ViewModelProvider(this, viewModelFactory).get(EditRecipeViewModel::class.java)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         ToolbarUtil.InitializeToolbar(this, toolbar, getString(R.string.edit_recipe_title))
