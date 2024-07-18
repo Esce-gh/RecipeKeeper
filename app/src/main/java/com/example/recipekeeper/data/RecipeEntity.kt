@@ -8,12 +8,12 @@ import java.io.Serializable
 @Entity(tableName = "recipes")
 data class RecipeEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    var name: String,
-    var url: String,
+    val name: String,
+    val url: String,
     @TypeConverters(Converters::class)
     val ingredients: ArrayList<String>,
-    var instructions: String,
-    var notes : String
+    val instructions: String,
+    val notes : String
 ) : Serializable {
     constructor() : this(-1, "", "", ArrayList(), "","")
 }

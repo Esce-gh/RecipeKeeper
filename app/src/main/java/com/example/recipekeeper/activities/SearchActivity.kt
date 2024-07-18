@@ -38,7 +38,6 @@ class SearchActivity : AppCompatActivity() {
         // TODO: add some info when no recipes are found
         recipeAdapter = RecipeAdapter() { recipe ->
             val intent = Intent(this, RecipeActivity::class.java).apply {
-                // TODO: fix
                 putExtra(getString(R.string.extra_recipe_id), recipe.id)
             }
             startActivity(intent)

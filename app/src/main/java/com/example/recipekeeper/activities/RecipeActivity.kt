@@ -103,8 +103,7 @@ class RecipeActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("Are you sure you want to delete this recipe?")
             .setPositiveButton("Delete") { dialog, id ->
-                // TODO: fix
-//                FileManager.deleteRecipe(this, viewModel.recipe.value?.name ?: "")
+                viewModel.deleteRecipe()
                 Redirect.redirect(this, SearchActivity::class.java)
             }
             .setNegativeButton("Cancel") { dialog, id ->

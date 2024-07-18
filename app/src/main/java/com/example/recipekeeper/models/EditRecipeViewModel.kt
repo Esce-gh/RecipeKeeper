@@ -30,6 +30,23 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
+    fun updateRecipe() {
+        viewModelScope.launch {
+            if (recipeID != null) {
+                recipeDao.update(
+                    RecipeEntity(
+                        id = recipeID!!,
+                        name = name.value ?: "",
+                        url = url.value ?: "",
+                        ingredients = items.value ?: ArrayList(),
+                        instructions = instructions.value ?: "",
+                        notes = notes.value ?: ""
+                    )
+                )
+            }
+        }
+    }
+
     private val _name = MutableLiveData<String>()
     val name: LiveData<String> get() = _name
     private val _url = MutableLiveData<String>()
@@ -91,6 +108,7 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
     fun loadRecipe(id: Int) = viewModelScope.launch {
         editMode = true
         val fetchedRecipe = recipeDao.getRecipeById(id)
+        recipeID = fetchedRecipe?.id
         _name.value = fetchedRecipe?.name
         _url.value = fetchedRecipe?.url
         _instructions.value = fetchedRecipe?.instructions

@@ -57,17 +57,9 @@ class DetailsEditFragment() : Fragment() {
                         ).show()
                     }
                 } else if (viewModel.editMode) { // check if existing recipe is being changed
-//                    FileManager.deleteRecipe(con, viewModel.name.value ?: "")
-//                    FileManager.saveRecipe(
-//                        con,
-//                        Recipe(
-//                            textInputName.text.toString(),
-//                            textInputURL.text.toString(),
-//                            viewModel.items.value ?: ArrayList(),
-//                            viewModel.instructions.value ?: "",
-//                            viewModel.notes.value ?: ""
-//                        )
-//                    )
+                    viewModel.setName(textInputName.text.toString())
+                    viewModel.setUrl(textInputURL.text.toString())
+                    viewModel.updateRecipe()
                     Redirect.redirect(con, SearchActivity::class.java)
                     activity?.runOnUiThread {
                         Toast.makeText(con, "Recipe modified!", Toast.LENGTH_SHORT).show()

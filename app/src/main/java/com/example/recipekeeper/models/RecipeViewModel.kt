@@ -18,4 +18,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val fetchedRecipe = recipeDao.getRecipeById(id)
         _recipe.postValue(fetchedRecipe)
     }
+
+    fun deleteRecipe() = viewModelScope.launch {
+        if (recipe.value != null) {
+            recipeDao.delete(recipe.value!!)
+        }
+    }
 }
