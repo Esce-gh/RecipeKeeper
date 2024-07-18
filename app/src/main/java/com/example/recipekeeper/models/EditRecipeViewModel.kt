@@ -3,7 +3,6 @@ package com.example.recipekeeper.models
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.recipekeeper.scraper.Ingredient
 import com.example.recipekeeper.scraper.Scraper
 
 class EditRecipeViewModel : ViewModel() {
@@ -11,30 +10,28 @@ class EditRecipeViewModel : ViewModel() {
     val name: LiveData<String> get() = _name
     private val _url = MutableLiveData<String>()
     val url: LiveData<String> get() = _url
-    private val _items = MutableLiveData<ArrayList<Ingredient>>()
-    val items: LiveData<ArrayList<Ingredient>> get() = _items
+    private val _items = MutableLiveData<ArrayList<String>>()
+    val items: LiveData<ArrayList<String>> get() = _items
     private val _instructions = MutableLiveData<String>()
     val instructions: LiveData<String> get() = _instructions
     private val _notes = MutableLiveData<String>()
     val notes: LiveData<String> get() = _notes
 
-    var scrapedItems: ArrayList<Ingredient> = ArrayList()
+    var scrapedItems: ArrayList<String> = ArrayList()
     var scrapedName: String = ""
     var scrapedUrl: String = ""
     var editMode: Boolean = false
 
-    fun addItem(item: Ingredient) {
+    fun addItem(item: String) {
         val currentItems = _items.value ?: ArrayList()
         currentItems.add(item)
         _items.value = currentItems
     }
 
-    fun editItem(position: Int, newName: String, newUnit: String, newAmount: String) {
+    fun editItem(position: Int, newItem: String) {
         val currentItems = _items.value
         if (currentItems != null && position < currentItems.size) {
-            currentItems[position].name = newName
-            currentItems[position].unit = newUnit
-            currentItems[position].amount = newAmount
+            currentItems[position] = newItem
             _items.value = ArrayList(currentItems) // Trigger LiveData update
         }
     }

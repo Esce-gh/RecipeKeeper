@@ -20,8 +20,6 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.activities.EditIngredientActivity
 import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.models.EditRecipeViewModel
-import com.example.recipekeeper.scraper.Ingredient
-import com.google.android.material.textfield.TextInputEditText
 
 class IngredientsEditFragment : Fragment() {
     private val viewModel: EditRecipeViewModel by activityViewModels()
@@ -52,7 +50,7 @@ class IngredientsEditFragment : Fragment() {
 
         val buttonAdd: Button = view.findViewById(R.id.buttonAdd)
         buttonAdd.setOnClickListener {
-            val item = Ingredient()
+            val item = ""
             viewModel.addItem(item)
             EditIntent((viewModel.items.value?.size ?: 1) - 1, item)
         }
@@ -70,10 +68,8 @@ class IngredientsEditFragment : Fragment() {
                         }
 
                         val itemName = it.getStringExtra("ITEM_NAME") ?: ""
-                        val itemAmount = it.getStringExtra("ITEM_AMOUNT") ?: ""
-                        val itemUnit = it.getStringExtra("ITEM_UNIT") ?: ""
                         if (itemPosition != -1) {
-                            viewModel.editItem(itemPosition, itemName, itemUnit, itemAmount)
+                            viewModel.editItem(itemPosition, itemName)
                         }
                     }
                 }
@@ -84,12 +80,10 @@ class IngredientsEditFragment : Fragment() {
             }
     }
 
-    private fun EditIntent(position: Int, item: Ingredient) {
+    private fun EditIntent(position: Int, item: String) {
         val intent = Intent(activity, EditIngredientActivity::class.java).apply {
             putExtra("ITEM_POSITION", position)
-            putExtra("ITEM_UNIT", item.unit)
-            putExtra("ITEM_NAME", item.name)
-            putExtra("ITEM_AMOUNT", item.amount)
+            putExtra("ITEM_NAME", item)
         }
         editItemLauncher.launch(intent)
     }

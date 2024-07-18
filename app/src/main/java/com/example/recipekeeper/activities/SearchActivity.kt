@@ -86,7 +86,7 @@ class SearchActivity : AppCompatActivity() {
         val matchingRecipes = recipeData.filter { recipe ->
             recipe.ingredients.any { ingredient ->
                 queries.all { query ->
-                    ingredient.name.contains(query, ignoreCase = true) || recipe.name.contains(query, ignoreCase = true)
+                    ingredient.contains(query, ignoreCase = true) || recipe.name.contains(query, ignoreCase = true)
                 }
             }
         }

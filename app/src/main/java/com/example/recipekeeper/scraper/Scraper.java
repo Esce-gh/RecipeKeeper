@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Scraper {
     private Document doc;
     private ArrayList<IngredientsGroup> ingredientsGroups = new ArrayList<>();
-    private ArrayList<Ingredient> ingredientsList = new ArrayList<>();
+    private ArrayList<String> ingredientsList = new ArrayList<>();
     private String name = "";
     private final String url;
 
@@ -58,29 +58,29 @@ public class Scraper {
         }
     }
 
-    private Ingredient extractIngredient(Element i) {
-        String name = "", amount = "", unit = "";
+    private String extractIngredient(Element i) {
+        String ingredient = "";
 
         for (Element e : i.children()) {
             String className = e.className();
             if (className.contains("name")) {
-                name = Jsoup.parse(e.html()).text();
+                ingredient += Jsoup.parse(e.html()).text() + " ";
             } else if (className.contains("unit")) {
-                unit = Jsoup.parse(e.html()).text();
+                ingredient += Jsoup.parse(e.html()).text() + " ";
             } else if (className.contains("amount")) {
-                amount = Jsoup.parse(e.html()).text();
+                ingredient += Jsoup.parse(e.html()).text() + " ";
             } else if (className.contains("notes")) {
-                name += Jsoup.parse(e.html()).text();
+                ingredient += Jsoup.parse(e.html()).text() + " ";
             }
         }
-        return new Ingredient(amount, unit, name);
+        return ingredient.trim();
     }
 
     public ArrayList<IngredientsGroup> getIngredientsGroups() {
         return ingredientsGroups;
     }
 
-    public ArrayList<Ingredient> getIngredientsList() {
+    public ArrayList<String> getIngredientsList() {
         return ingredientsList;
     }
 

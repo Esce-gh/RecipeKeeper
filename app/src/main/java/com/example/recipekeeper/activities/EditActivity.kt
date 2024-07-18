@@ -19,7 +19,6 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
 import com.example.recipekeeper.models.EditRecipeViewModel
 import com.example.recipekeeper.models.Recipe
-import com.example.recipekeeper.scraper.Ingredient
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator

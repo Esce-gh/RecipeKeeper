@@ -7,7 +7,7 @@ import java.util.List;
 public class IngredientsGroup implements Serializable
 {
     private final String name;
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private List<String> ingredients = new ArrayList<>();
 
     public IngredientsGroup(String name)
     {
@@ -19,12 +19,12 @@ public class IngredientsGroup implements Serializable
         return name;
     }
 
-    public List<Ingredient> getIngredients()
+    public List<String> getIngredients()
     {
         return ingredients;
     }
 
-    public void addIngredient(Ingredient i)
+    public void addIngredient(String i)
     {
         ingredients.add(i);
     }

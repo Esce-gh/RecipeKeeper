@@ -15,28 +15,18 @@ class EditIngredientActivity : AppCompatActivity() {
 
         val itemPosition = intent.getIntExtra("ITEM_POSITION", -1)
         val itemName = intent.getStringExtra("ITEM_NAME")
-        val itemAmount = intent.getStringExtra("ITEM_AMOUNT")
-        val itemUnit = intent.getStringExtra("ITEM_UNIT")
 
         val textInputName = findViewById<TextInputEditText>(R.id.textInputName)
-        val textInputAmount = findViewById<TextInputEditText>(R.id.textInputAmount)
-        val textInputUnit = findViewById<TextInputEditText>(R.id.textInputUnit)
         val buttonSave = findViewById<Button>(R.id.buttonSave)
         val buttonDelete = findViewById<Button>(R.id.buttonDelete)
 
         textInputName.setText(itemName)
-        textInputAmount.setText(itemAmount)
-        textInputUnit.setText(itemUnit)
 
         buttonSave.setOnClickListener {
             val newName = textInputName.text.toString()
-            val newAmount = textInputAmount.text.toString()
-            val newUnit = textInputUnit.text.toString()
             val resultIntent = Intent()
 
             resultIntent.putExtra("ITEM_NAME", newName)
-            resultIntent.putExtra("ITEM_AMOUNT", newAmount)
-            resultIntent.putExtra("ITEM_UNIT", newUnit)
             resultIntent.putExtra("ITEM_POSITION", itemPosition)
 
             setResult(Activity.RESULT_OK, resultIntent)

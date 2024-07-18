@@ -7,13 +7,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
-import com.example.recipekeeper.scraper.Ingredient
 
 class ItemAdapter(
-    private val items: ArrayList<Ingredient>,
-    private val onEditClick: ((Ingredient, Int) -> Unit)?
+    private val items: ArrayList<String>,
+    private val onEditClick: ((String, Int) -> Unit)?
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
-    constructor(ingredients: ArrayList<Ingredient>) : this(ingredients, null)
+    constructor(ingredients: ArrayList<String>) : this(ingredients, null)
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemText: TextView = itemView.findViewById(R.id.textViewIngredient)
@@ -31,12 +30,7 @@ class ItemAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
-        val text = item.amount +
-                (if (item.amount.isEmpty()) "" else " ") +
-                item.unit +
-                (if (item.unit.isEmpty()) "" else " ") +
-                item.name
-        holder.itemText.text = text
+        holder.itemText.text = item
         if (onEditClick != null) {
             holder.buttonEdit.setOnClickListener {
                 onEditClick.invoke(item, position)
@@ -50,7 +44,7 @@ class ItemAdapter(
         return items.size
     }
 
-    fun updateItems(newItems: ArrayList<Ingredient>) {
+    fun updateItems(newItems: ArrayList<String>) {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()

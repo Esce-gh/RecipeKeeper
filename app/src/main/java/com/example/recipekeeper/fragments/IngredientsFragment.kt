@@ -1,6 +1,5 @@
 package com.example.recipekeeper.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.ItemAdapter
-import com.example.recipekeeper.models.EditRecipeViewModel
 import com.example.recipekeeper.models.RecipeViewModel
-import com.example.recipekeeper.scraper.Ingredient
 
 
 class IngredientsFragment() : Fragment() {

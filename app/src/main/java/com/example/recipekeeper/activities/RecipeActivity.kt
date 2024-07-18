@@ -14,10 +14,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipePagerAdapter
-import com.example.recipekeeper.models.EditRecipeViewModel
 import com.example.recipekeeper.models.Recipe
 import com.example.recipekeeper.models.RecipeViewModel
-import com.example.recipekeeper.scraper.Ingredient
 import com.example.recipekeeper.utils.FileManager
 import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.utils.ToolbarUtil
