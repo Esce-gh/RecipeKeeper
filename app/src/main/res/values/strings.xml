@@ -10,4 +10,5 @@
 
     <string name="extra_edit_mode">EDIT</string>
     <string name="extra_recipe">RECIPE</string>
+    <string name="extra_recipe_id">RECIPE_ID</string>
 </resources>

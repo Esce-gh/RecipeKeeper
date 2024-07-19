@@ -45,7 +45,9 @@ class IngredientsEditFragment : Fragment() {
         }
         recyclerView.adapter = adapter
         viewModel.items.observe(viewLifecycleOwner, Observer { items ->
-            adapter.updateItems(items)
+            if (items != null) {
+                adapter.updateItems(items)
+            }
         })
 
         val buttonAdd: Button = view.findViewById(R.id.buttonAdd)

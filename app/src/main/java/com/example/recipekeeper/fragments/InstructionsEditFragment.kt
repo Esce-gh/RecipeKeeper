@@ -43,6 +43,5 @@ class InstructionsEditFragment : Fragment() {
                 viewModel.setInstructions(s.toString())
             }
         })
-
     }
 }

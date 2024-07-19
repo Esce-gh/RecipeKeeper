@@ -10,37 +10,41 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipeAdapter
-import com.example.recipekeeper.models.Recipe
-import com.example.recipekeeper.utils.FileManager
+import com.example.recipekeeper.models.ApplicationViewModelFactory
+import com.example.recipekeeper.models.SearchViewModel
 
 class SearchActivity : AppCompatActivity() {
-    private val queries = mutableListOf<String>()
+    private lateinit var viewModel: SearchViewModel
     private lateinit var recipeAdapter: RecipeAdapter
-    private lateinit var recipeData: ArrayList<Recipe>
-    private lateinit var recipeAdapterData: ArrayList<Recipe>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        recipeData = FileManager.loadRecipes(this)
-        recipeAdapterData = ArrayList(recipeData)
+        val viewModelFactory = ApplicationViewModelFactory(application, SearchViewModel::class)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewRecipeList)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // TODO: add some info when no recipes are found
-        recipeAdapter = RecipeAdapter(recipeAdapterData) { recipe ->
+        recipeAdapter = RecipeAdapter() { recipe ->
             val intent = Intent(this, RecipeActivity::class.java).apply {
-                putExtra("RECIPE", recipe)
+                putExtra(getString(R.string.extra_recipe_id), recipe.id)
             }
             startActivity(intent)
         }
         recyclerView.adapter = recipeAdapter
+
+        viewModel.recipes.observe(this, Observer { recipes ->
+            recipes?.let { recipeAdapter.submitList(it) }
+        })
 
         overrideBackButton()
         initializeTagSearch()
@@ -53,9 +57,9 @@ class SearchActivity : AppCompatActivity() {
         addTagButton.setOnClickListener {
             val ingredient = ingredientEditText.text.toString().trim()
             if (ingredient.isNotEmpty()) {
-                queries.add(ingredient)
+                viewModel.addQuery(ingredient)
                 displayTags(tagsContainer)
-                updateSearchResults()
+                viewModel.updateResults()
                 ingredientEditText.text.clear()
             }
         }
@@ -63,7 +67,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun displayTags(tagsContainer: LinearLayout) {
         tagsContainer.removeAllViews()
-        queries.forEach { ingredient ->
+        viewModel.queries.value?.forEach { ingredient ->
             val tagView = TextView(this).apply {
                 text = ingredient
                 setBackgroundColor(Color.LTGRAY)
@@ -73,24 +77,13 @@ class SearchActivity : AppCompatActivity() {
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
                 setOnClickListener {
-                    queries.remove(ingredient)
+                    viewModel.removeQuery(ingredient)
                     displayTags(tagsContainer)
-                    updateSearchResults()
+                    viewModel.updateResults()
                 }
             }
             tagsContainer.addView(tagView)
         }
-    }
-
-    private fun updateSearchResults() {
-        val matchingRecipes = recipeData.filter { recipe ->
-            recipe.ingredients.any { ingredient ->
-                queries.all { query ->
-                    ingredient.contains(query, ignoreCase = true) || recipe.name.contains(query, ignoreCase = true)
-                }
-            }
-        }
-        recipeAdapter.updateRecipes(matchingRecipes as ArrayList<Recipe>)
     }
 
     private fun overrideBackButton() {

@@ -1,11 +1,26 @@
 package com.example.recipekeeper.models
 
+import android.app.Application
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.recipekeeper.activities.MainActivity
+import com.example.recipekeeper.data.RecipeDao
+import com.example.recipekeeper.data.RecipeDatabase
+import com.example.recipekeeper.data.RecipeEntity
 import com.example.recipekeeper.scraper.Scraper
+import com.example.recipekeeper.utils.Redirect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class EditRecipeViewModel : ViewModel() {
+class EditRecipeViewModel(application: Application) : AndroidViewModel(application) {
+    private val recipeDao: RecipeDao = RecipeDatabase.getDatabase(application).recipeDao()
+
     private val _name = MutableLiveData<String>()
     val name: LiveData<String> get() = _name
     private val _url = MutableLiveData<String>()
@@ -17,10 +32,39 @@ class EditRecipeViewModel : ViewModel() {
     private val _notes = MutableLiveData<String>()
     val notes: LiveData<String> get() = _notes
 
-    var scrapedItems: ArrayList<String> = ArrayList()
-    var scrapedName: String = ""
-    var scrapedUrl: String = ""
     var editMode: Boolean = false
+    var recipeID: Int? = null
+
+    fun insertRecipe() {
+        viewModelScope.launch {
+            recipeDao.insert(
+                RecipeEntity(
+                    name = name.value ?: "",
+                    url = url.value ?: "",
+                    ingredients = items.value ?: ArrayList(),
+                    instructions = instructions.value ?: "",
+                    notes = notes.value ?: ""
+                )
+            )
+        }
+    }
+
+    fun updateRecipe() {
+        viewModelScope.launch {
+            if (recipeID != null) {
+                recipeDao.update(
+                    RecipeEntity(
+                        id = recipeID!!,
+                        name = name.value ?: "",
+                        url = url.value ?: "",
+                        ingredients = items.value ?: ArrayList(),
+                        instructions = instructions.value ?: "",
+                        notes = notes.value ?: ""
+                    )
+                )
+            }
+        }
+    }
 
     fun addItem(item: String) {
         val currentItems = _items.value ?: ArrayList()
@@ -42,12 +86,6 @@ class EditRecipeViewModel : ViewModel() {
         _items.value = currentItems
     }
 
-    fun refreshValues() {
-        _name.value = scrapedName
-        _url.value = scrapedUrl
-        _items.value = scrapedItems
-    }
-
     fun importURL(importUrl: String) {
         var scraper: Scraper? = null
         try {
@@ -57,19 +95,25 @@ class EditRecipeViewModel : ViewModel() {
             e.printStackTrace()
         }
         if (scraper != null) {
-            scrapedItems = scraper.ingredientsList
-            scrapedName = scraper.name
-            scrapedUrl = importUrl
+            viewModelScope.launch {
+                withContext(Dispatchers.Main) {
+                    _name.value = scraper.name
+                    _url.value = importUrl
+                    _items.value = scraper.ingredientsList
+                }
+            }
         }
     }
 
-    fun loadRecipe(recipe: Recipe) {
-        _name.value = recipe.name
-        _url.value = recipe.url
-        _instructions.value = recipe.instructions
-        _notes.value = recipe.notes
-        _items.value = recipe.ingredients
+    fun loadRecipe(id: Int) = viewModelScope.launch {
         editMode = true
+        val fetchedRecipe = recipeDao.getRecipeById(id)
+        recipeID = fetchedRecipe?.id
+        _name.value = fetchedRecipe?.name
+        _url.value = fetchedRecipe?.url
+        _instructions.value = fetchedRecipe?.instructions
+        _notes.value = fetchedRecipe?.notes
+        _items.value = fetchedRecipe?.ingredients
     }
 
     fun setName(newName: String) {
