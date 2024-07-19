@@ -2,21 +2,38 @@ package com.example.recipekeeper.models
 
 import android.app.Application
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipekeeper.activities.MainActivity
 import com.example.recipekeeper.data.RecipeDao
 import com.example.recipekeeper.data.RecipeDatabase
 import com.example.recipekeeper.data.RecipeEntity
 import com.example.recipekeeper.scraper.Scraper
+import com.example.recipekeeper.utils.Redirect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class EditRecipeViewModel(application: Application) : AndroidViewModel(application) {
     private val recipeDao: RecipeDao = RecipeDatabase.getDatabase(application).recipeDao()
+
+    private val _name = MutableLiveData<String>()
+    val name: LiveData<String> get() = _name
+    private val _url = MutableLiveData<String>()
+    val url: LiveData<String> get() = _url
+    private val _items = MutableLiveData<ArrayList<String>>()
+    val items: LiveData<ArrayList<String>> get() = _items
+    private val _instructions = MutableLiveData<String>()
+    val instructions: LiveData<String> get() = _instructions
+    private val _notes = MutableLiveData<String>()
+    val notes: LiveData<String> get() = _notes
+
+    var editMode: Boolean = false
+    var recipeID: Int? = null
 
     fun insertRecipe() {
         viewModelScope.launch {
@@ -49,20 +66,6 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    private val _name = MutableLiveData<String>()
-    val name: LiveData<String> get() = _name
-    private val _url = MutableLiveData<String>()
-    val url: LiveData<String> get() = _url
-    private val _items = MutableLiveData<ArrayList<String>>()
-    val items: LiveData<ArrayList<String>> get() = _items
-    private val _instructions = MutableLiveData<String>()
-    val instructions: LiveData<String> get() = _instructions
-    private val _notes = MutableLiveData<String>()
-    val notes: LiveData<String> get() = _notes
-
-    var editMode: Boolean = false
-    var recipeID: Int? = null
-
     fun addItem(item: String) {
         val currentItems = _items.value ?: ArrayList()
         currentItems.add(item)
@@ -83,7 +86,7 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         _items.value = currentItems
     }
 
-    fun importURL(importUrl: String){
+    fun importURL(importUrl: String) {
         var scraper: Scraper? = null
         try {
             scraper = Scraper(importUrl)

@@ -48,45 +48,18 @@ class DetailsEditFragment() : Fragment() {
         val buttonConfirm: Button = view.findViewById(R.id.buttonConfirm)
         buttonConfirm.setOnClickListener {
             context?.let { con ->
-                // check if recipe with same name already exists
-                if (!viewModel.editMode && !NameAvailable(con, textInputName.text.toString())) {
-                    activity?.runOnUiThread {
-                        Toast.makeText(
-                            con,
-                            "Recipe with this name already exists!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } else if (viewModel.editMode) { // check if existing recipe is being changed
-                    viewModel.setName(textInputName.text.toString())
-                    viewModel.setUrl(textInputURL.text.toString())
+                viewModel.setName(textInputName.text.toString())
+                viewModel.setUrl(textInputURL.text.toString())
+                if (viewModel.editMode) { // check if existing recipe is being changed
                     viewModel.updateRecipe()
                     Redirect.redirect(con, SearchActivity::class.java)
-                    activity?.runOnUiThread {
-                        Toast.makeText(con, "Recipe modified!", Toast.LENGTH_SHORT).show()
-                    }
+                    Toast.makeText(con, "Recipe modified!", Toast.LENGTH_SHORT).show()
                 } else {
-                    // TODO: make the viewmodel automatically update name and url
-                    viewModel.setName(textInputName.text.toString())
-                    viewModel.setUrl(textInputURL.text.toString())
                     viewModel.insertRecipe()
                     Redirect.redirect(con, MainActivity::class.java)
-                    activity?.runOnUiThread {
-                        Toast.makeText(con, "Recipe added!", Toast.LENGTH_SHORT).show()
-                    }
+                    Toast.makeText(con, "Recipe added!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-    }
-
-    // TODO: fix
-    private fun NameAvailable(context: Context, name: String): Boolean {
-//        val recipes = FileManager.loadRecipes(context)
-//        for (recipe in recipes) {
-//            if (recipe.name == name) {
-//                return false
-//            }
-//        }
-        return true
     }
 }

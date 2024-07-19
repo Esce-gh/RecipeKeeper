@@ -47,55 +47,44 @@ class SearchActivity : AppCompatActivity() {
         })
 
         overrideBackButton()
-//        initializeTagSearch()
+        initializeTagSearch()
     }
 
-//    private fun initializeTagSearch() {
-//        val ingredientEditText = findViewById<EditText>(R.id.ingredientEditText)
-//        val addTagButton = findViewById<Button>(R.id.addTagButton)
-//        val tagsContainer = findViewById<LinearLayout>(R.id.tagsContainer)
-//        addTagButton.setOnClickListener {
-//            val ingredient = ingredientEditText.text.toString().trim()
-//            if (ingredient.isNotEmpty()) {
-//                queries.add(ingredient)
-//                displayTags(tagsContainer)
-//                updateSearchResults()
-//                ingredientEditText.text.clear()
-//            }
-//        }
-//    }
+    private fun initializeTagSearch() {
+        val ingredientEditText = findViewById<EditText>(R.id.ingredientEditText)
+        val addTagButton = findViewById<Button>(R.id.addTagButton)
+        val tagsContainer = findViewById<LinearLayout>(R.id.tagsContainer)
+        addTagButton.setOnClickListener {
+            val ingredient = ingredientEditText.text.toString().trim()
+            if (ingredient.isNotEmpty()) {
+                viewModel.addQuery(ingredient)
+                displayTags(tagsContainer)
+                viewModel.updateResults()
+                ingredientEditText.text.clear()
+            }
+        }
+    }
 
-//    private fun displayTags(tagsContainer: LinearLayout) {
-//        tagsContainer.removeAllViews()
-//        queries.forEach { ingredient ->
-//            val tagView = TextView(this).apply {
-//                text = ingredient
-//                setBackgroundColor(Color.LTGRAY)
-//                setPadding(8, 8, 8, 8)
-//                layoutParams = ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.WRAP_CONTENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//                )
-//                setOnClickListener {
-//                    queries.remove(ingredient)
-//                    displayTags(tagsContainer)
-//                    updateSearchResults()
-//                }
-//            }
-//            tagsContainer.addView(tagView)
-//        }
-//    }
-
-//    private fun updateSearchResults() {
-//        val matchingRecipes = recipeData.filter { recipe ->
-//            recipe.ingredients.any { ingredient ->
-//                queries.all { query ->
-//                    ingredient.contains(query, ignoreCase = true) || recipe.name.contains(query, ignoreCase = true)
-//                }
-//            }
-//        }
-//        recipeAdapter.updateRecipes(matchingRecipes as ArrayList<Recipe>)
-//    }
+    private fun displayTags(tagsContainer: LinearLayout) {
+        tagsContainer.removeAllViews()
+        viewModel.queries.value?.forEach { ingredient ->
+            val tagView = TextView(this).apply {
+                text = ingredient
+                setBackgroundColor(Color.LTGRAY)
+                setPadding(8, 8, 8, 8)
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                setOnClickListener {
+                    viewModel.removeQuery(ingredient)
+                    displayTags(tagsContainer)
+                    viewModel.updateResults()
+                }
+            }
+            tagsContainer.addView(tagView)
+        }
+    }
 
     private fun overrideBackButton() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
