@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
+import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.models.ApplicationViewModelFactory
 import com.example.recipekeeper.models.EditRecipeViewModel
 import com.example.recipekeeper.utils.ToolbarUtil
@@ -26,10 +28,10 @@ import java.util.concurrent.Executors
 
 class EditActivity : AppCompatActivity() {
     private lateinit var viewModel: EditRecipeViewModel
+    private lateinit var adapter: EditPagerAdapter
     private val executor = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
@@ -46,8 +48,8 @@ class EditActivity : AppCompatActivity() {
 
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
-        val pagerAdapter = EditPagerAdapter(this)
-        viewPager.adapter = pagerAdapter
+        adapter = EditPagerAdapter(this)
+        viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.edit_pager_details)
@@ -67,7 +69,7 @@ class EditActivity : AppCompatActivity() {
 
     private fun showImportDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_import_url, null)
-        val editTextURL: EditText = dialogView.findViewById(R.id.editTextURL)
+        val editTextURL: EditText = dialogView.findViewById(R.id.editText)
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
         val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)
 

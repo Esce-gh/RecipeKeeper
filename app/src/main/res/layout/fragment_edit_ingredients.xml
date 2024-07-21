@@ -9,18 +9,35 @@
         android:id="@+id/recyclerViewIngredients"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
-        android:id="@+id/buttonAdd"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Add"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="32dp"
+            android:layout_weight="1.0"
+            android:text="Add" />
+
+        <Button
+            android:id="@+id/buttonRemoveSelected"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginEnd="36dp"
+            android:layout_weight="1.0"
+            android:text="Remove selected" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
