@@ -12,11 +12,12 @@ import com.example.recipekeeper.R
 // QOL:
 // - hold and select recipes to remove
 // - some easier way to input recipes manually
-// - add tags after you press enter in the search bar
 //
 // Features:
 // - ingredient groups
 // - sorting search results
+// - paging
+// - logs
 //
 // SOON(TM):
 // - GUI that actually looks like something
