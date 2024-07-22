@@ -113,6 +113,8 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
                     _name.value = scraper.name
                     _url.value = importUrl
                     _items.value = scraper.ingredientsList
+                    _instructions.value = scraper.instructions
+                    _notes.value = scraper.notes
                 }
             }
         }

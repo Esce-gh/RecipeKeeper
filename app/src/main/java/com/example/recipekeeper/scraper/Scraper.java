@@ -16,6 +16,8 @@ public class Scraper {
     private ArrayList<IngredientsGroup> ingredientsGroups = new ArrayList<>();
     private ArrayList<String> ingredientsList = new ArrayList<>();
     private String name = "";
+    private String instructions = "";
+    private String notes = "";
     private final String url;
 
     public Scraper(String link) throws Exception {
@@ -50,6 +52,16 @@ public class Scraper {
                 ingredientsList.add(extractIngredient(i));
             }
             ingredientsGroups.add(group);
+        }
+
+        Elements instructionsContainer = doc.getElementsByClass("wprm-recipe-instruction-text");
+        for (int i = 0; i < instructionsContainer.size(); i++) {
+            instructions += String.format("%d.", i + 1) + Jsoup.parse((instructionsContainer.get(i).html())).text() + "\n";
+        }
+
+        Elements notesElements = doc.getElementsByClass("wprm-recipe-notes");
+        for (Element e : notesElements) {
+            notes += Jsoup.parse(e.html()).text();
         }
 
         Elements name = doc.getElementsByClass("wprm-recipe-name");
@@ -90,5 +102,13 @@ public class Scraper {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 }
