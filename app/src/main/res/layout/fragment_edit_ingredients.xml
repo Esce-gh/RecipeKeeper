@@ -28,15 +28,20 @@
             android:id="@+id/buttonAdd"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_marginStart="32dp"
             android:layout_weight="1.0"
             android:text="Add" />
+
+        <Button
+            android:id="@+id/buttonPaste"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:text="Paste Ingredients" />
 
         <Button
             android:id="@+id/buttonRemoveSelected"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_marginEnd="36dp"
             android:layout_weight="1.0"
             android:text="Remove selected" />
     </LinearLayout>

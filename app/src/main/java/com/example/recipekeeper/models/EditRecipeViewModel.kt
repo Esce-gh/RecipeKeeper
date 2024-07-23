@@ -120,6 +120,10 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
+    fun pasteIngredients(ingredientsString: String) {
+        _items.value = ingredientsString.split("\n").toCollection(ArrayList())
+    }
+
     fun loadRecipe(id: Int) = viewModelScope.launch {
         editMode = true
         val fetchedRecipe = recipeDao.getRecipeById(id)

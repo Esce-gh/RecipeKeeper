@@ -11,7 +11,6 @@ import com.example.recipekeeper.R
 // TODO: a list of things I want to implement:
 // QOL:
 // - hold and select recipes to remove
-// - some easier way to input recipes manually
 //
 // Features:
 // - ingredient groups

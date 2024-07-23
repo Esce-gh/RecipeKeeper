@@ -1,8 +1,5 @@
 package com.example.recipekeeper.fragments
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -67,8 +61,34 @@ class IngredientsEditFragment : Fragment() {
                 adapter.deselectItems()
             }
         }
+
+        val buttonPaste: Button = view.findViewById(R.id.buttonPaste)
+        buttonPaste.setOnClickListener {
+            showPasteDialog()
+        }
     }
 
+    private fun showPasteDialog() {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_paste_ingredients, null)
+        val editText: EditText = dialogView.findViewById(R.id.editText)
+        val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
+        val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        buttonCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        buttonOK.setOnClickListener {
+            viewModel.pasteIngredients(editText.text.toString())
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 
     private fun showEditDialog(position: Int, newItem: Boolean) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_ingredient, null)
