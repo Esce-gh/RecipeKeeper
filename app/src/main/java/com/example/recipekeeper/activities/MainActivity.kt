@@ -10,13 +10,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.recipekeeper.R
 // TODO: a list of things I want to implement:
 // QOL:
-// - hold and select recipes/ingredients to remove
-// - some easier way to input recipes manually
-// - add tags after you press enter in the search bar
+// - hold and select recipes to remove
 //
 // Features:
 // - ingredient groups
 // - sorting search results
+// - paging
+// - logs
 //
 // SOON(TM):
 // - GUI that actually looks like something

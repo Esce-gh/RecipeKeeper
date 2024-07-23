@@ -9,7 +9,7 @@
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter URL"
+        android:hint="Enter ingredient"
         android:inputType="textUri" />
 
     <LinearLayout
@@ -24,6 +24,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel" />
+
+        <Button
+            android:id="@+id/buttonRemove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Remove" />
 
         <Button
             android:id="@+id/buttonOK"

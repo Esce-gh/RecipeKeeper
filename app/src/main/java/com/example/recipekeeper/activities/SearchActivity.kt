@@ -3,7 +3,9 @@ package com.example.recipekeeper.activities
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -55,13 +57,24 @@ class SearchActivity : AppCompatActivity() {
         val addTagButton = findViewById<Button>(R.id.addTagButton)
         val tagsContainer = findViewById<LinearLayout>(R.id.tagsContainer)
         addTagButton.setOnClickListener {
-            val ingredient = ingredientEditText.text.toString().trim()
-            if (ingredient.isNotEmpty()) {
-                viewModel.addQuery(ingredient)
+            addTag(ingredientEditText)
+            displayTags(tagsContainer)
+        }
+        ingredientEditText.setOnEditorActionListener { view, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent?.keyCode == KeyEvent.KEYCODE_ENTER) {
+                addTag(ingredientEditText)
                 displayTags(tagsContainer)
-                viewModel.updateResults()
-                ingredientEditText.text.clear()
             }
+            return@setOnEditorActionListener true
+        }
+    }
+
+    private fun addTag(editText: EditText) {
+        val ingredient = editText.text.toString().trim()
+        if (ingredient.isNotEmpty()) {
+            viewModel.addQuery(ingredient)
+            viewModel.updateResults()
+            editText.text.clear()
         }
     }
 

@@ -86,6 +86,19 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         _items.value = currentItems
     }
 
+    fun removeSelected(indexes: List<Int>) {
+        val currentItems = _items.value
+        val newItems = ArrayList<String>()
+        if (currentItems != null) {
+            for (i in 0..<currentItems.size) {
+                if (!indexes.contains(i)) {
+                    newItems.add(currentItems[i])
+                }
+            }
+        }
+        _items.value = newItems
+    }
+
     fun importURL(importUrl: String) {
         var scraper: Scraper? = null
         try {
@@ -100,9 +113,15 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
                     _name.value = scraper.name
                     _url.value = importUrl
                     _items.value = scraper.ingredientsList
+                    _instructions.value = scraper.instructions
+                    _notes.value = scraper.notes
                 }
             }
         }
+    }
+
+    fun pasteIngredients(ingredientsString: String) {
+        _items.value = ingredientsString.split("\n").toCollection(ArrayList())
     }
 
     fun loadRecipe(id: Int) = viewModelScope.launch {
