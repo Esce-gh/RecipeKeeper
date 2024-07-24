@@ -4,6 +4,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -12,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +23,8 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipeAdapter
 import com.example.recipekeeper.models.ApplicationViewModelFactory
 import com.example.recipekeeper.models.SearchViewModel
+import com.example.recipekeeper.utils.ToolbarUtil
+import com.google.android.flexbox.FlexboxLayout
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
@@ -34,6 +39,9 @@ class SearchActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewRecipeList)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        ToolbarUtil.InitializeToolbar(this, toolbar, getString(R.string.find_recipe_title))
 
         // TODO: add some info when no recipes are found
         recipeAdapter = RecipeAdapter() { recipe ->
@@ -53,13 +61,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initializeTagSearch() {
-        val ingredientEditText = findViewById<EditText>(R.id.ingredientEditText)
-        val addTagButton = findViewById<Button>(R.id.addTagButton)
-        val tagsContainer = findViewById<LinearLayout>(R.id.tagsContainer)
-        addTagButton.setOnClickListener {
-            addTag(ingredientEditText)
-            displayTags(tagsContainer)
-        }
+        val ingredientEditText = findViewById<EditText>(R.id.editTextToolbar)
+        val tagsContainer = findViewById<FlexboxLayout>(R.id.tagsContainer)
         ingredientEditText.setOnEditorActionListener { view, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent?.keyCode == KeyEvent.KEYCODE_ENTER) {
                 addTag(ingredientEditText)
@@ -78,17 +81,19 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayTags(tagsContainer: LinearLayout) {
+    private fun displayTags(tagsContainer: FlexboxLayout) {
         tagsContainer.removeAllViews()
         viewModel.queries.value?.forEach { ingredient ->
             val tagView = TextView(this).apply {
                 text = ingredient
                 setBackgroundColor(Color.LTGRAY)
                 setPadding(8, 8, 8, 8)
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+                layoutParams = FlexboxLayout.LayoutParams(
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(8, 8, 8, 8)
+                }
                 setOnClickListener {
                     viewModel.removeQuery(ingredient)
                     displayTags(tagsContainer)
@@ -96,6 +101,33 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
             tagsContainer.addView(tagView)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.sort_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.sort_name_asc -> {
+                viewModel.sortName(true)
+                true
+            }
+            R.id.sort_name_desc -> {
+                viewModel.sortName(false)
+                true
+            }
+            R.id.sort_date_new -> {
+                viewModel.sortId(true)
+                true
+            }
+            R.id.sort_date_old -> {
+                viewModel.sortId(false)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

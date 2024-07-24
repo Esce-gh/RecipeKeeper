@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_sort"
+        android:title="Sort"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:orderInCategory="100"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/sort_name_asc"
+                android:title="Sort: Name Asc." />
+            <item
+                android:id="@+id/sort_name_desc"
+                android:title="Sort: Name Desc." />
+            <item
+                android:id="@+id/sort_date_new"
+                android:title="Sort: Newest" />
+            <item
+                android:id="@+id/sort_date_old"
+                android:title="Sort: Oldest" />
+        </menu>
+    </item>
+</menu>

@@ -2,6 +2,7 @@
     <string name="app_name">RecipeKeeper</string>
     <string name="recipe_data_file">recipes.dat</string>
     <string name="edit_recipe_title">Edit recipe</string>
+    <string name="find_recipe_title">Find recipe</string>
 
     <string name="edit_pager_details">Details</string>
     <string name="edit_pager_ingredients">Ingredients</string>

@@ -14,7 +14,6 @@ import com.example.recipekeeper.R
 //
 // Features:
 // - ingredient groups
-// - sorting search results
 // - paging
 // - logs
 //

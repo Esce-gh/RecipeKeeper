@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/customToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary">
+
+    <EditText
+        android:id="@+id/editTextToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search..."
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:inputType="text"
+        android:imeOptions="actionDone"/>
+</androidx.appcompat.widget.Toolbar>

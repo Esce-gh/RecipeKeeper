@@ -52,4 +52,20 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
     }
+
+    fun sortName(ascending: Boolean) {
+        if (ascending) {
+            _recipes.value = _recipes.value?.sortedBy { it.name }
+        } else {
+            _recipes.value = _recipes.value?.sortedByDescending { it.name }
+        }
+    }
+
+    fun sortId(ascending: Boolean) {
+        if (ascending) {
+            _recipes.value = _recipes.value?.sortedBy { it.id }
+        } else {
+            _recipes.value = _recipes.value?.sortedByDescending { it.id }
+        }
+    }
 }
