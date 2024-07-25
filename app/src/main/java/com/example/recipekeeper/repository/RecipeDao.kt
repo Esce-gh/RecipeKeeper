@@ -1,4 +1,4 @@
-package com.example.recipekeeper.data
+package com.example.recipekeeper.repository
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

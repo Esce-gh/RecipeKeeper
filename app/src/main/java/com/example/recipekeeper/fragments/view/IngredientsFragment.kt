@@ -1,34 +1,39 @@
-package com.example.recipekeeper.fragments
+package com.example.recipekeeper.fragments.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.ItemAdapter
-import com.example.recipekeeper.models.RecipeViewModel
+import com.example.recipekeeper.viewmodels.RecipeViewModel
 
-class InstructionsFragment : Fragment() {
+
+class IngredientsFragment : Fragment() {
     private val viewModel: RecipeViewModel by activityViewModels()
+    private lateinit var adapter: ItemAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_instructions, container, false)
+        return inflater.inflate(R.layout.fragment_ingredients, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val textView: TextView = view.findViewById(R.id.textView)
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewIngredients)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter = ItemAdapter(ArrayList())
+        recyclerView.adapter = adapter
+
         viewModel.recipe.observe(viewLifecycleOwner) { recipe ->
-            textView.text = recipe?.instructions ?: ""
+            recipe?.let { adapter.updateItems(ArrayList(it.ingredients)) }
         }
     }
 }

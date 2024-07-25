@@ -1,4 +1,4 @@
-package com.example.recipekeeper.data
+package com.example.recipekeeper.repository
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

@@ -1,4 +1,4 @@
-package com.example.recipekeeper.fragments
+package com.example.recipekeeper.fragments.edit
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.example.recipekeeper.R
-import com.example.recipekeeper.models.EditRecipeViewModel
+import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 
-class NotesEditFragment : Fragment() {
+class InstructionsEditFragment : Fragment() {
     private val viewModel: EditRecipeViewModel by activityViewModels()
     private lateinit var editText: EditText
 
@@ -23,12 +22,11 @@ class NotesEditFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_edit_instructions, container, false)
         editText = view.findViewById(R.id.editText)
-        editText.setHint("Enter notes")
-        viewModel.notes.observe(viewLifecycleOwner, Observer { notes ->
-            if (editText.text.toString() != notes) {
-                editText.setText(notes)
+        viewModel.instructions.observe(viewLifecycleOwner) { instructions ->
+            if (editText.text.toString() != instructions) {
+                editText.setText(instructions)
             }
-        })
+        }
         return view
     }
 
@@ -41,9 +39,8 @@ class NotesEditFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                viewModel.setNotes(s.toString())
+                viewModel.setInstructions(s.toString())
             }
         })
-
     }
 }

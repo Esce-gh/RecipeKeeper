@@ -14,14 +14,11 @@ import com.example.recipekeeper.R
 //
 // Features:
 // - ingredient groups
-// - paging
-// - logs
 //
 // SOON(TM):
 // - GUI that actually looks like something
 // - shopping cart feature
 // - recipe thumbnails
-// - export/import data
 
 class MainActivity : AppCompatActivity()
 {

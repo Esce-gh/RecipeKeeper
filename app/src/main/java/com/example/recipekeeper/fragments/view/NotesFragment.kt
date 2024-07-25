@@ -1,4 +1,4 @@
-package com.example.recipekeeper.fragments
+package com.example.recipekeeper.fragments.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.example.recipekeeper.R
-import com.example.recipekeeper.models.RecipeViewModel
+import com.example.recipekeeper.viewmodels.RecipeViewModel
 
 class NotesFragment : Fragment() {
     private val viewModel: RecipeViewModel by activityViewModels()

@@ -1,7 +1,12 @@
 package com.example.recipekeeper.scraper;
 
+import static androidx.core.content.ContextCompat.getString;
+
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
+
+import com.example.recipekeeper.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -40,11 +45,7 @@ public class Scraper {
 
         for (Element e : ingredientsContainer) {
             Elements ingredients = new Elements();
-            try {
-                ingredients = e.getElementsByClass("wprm-recipe-ingredients").get(0).children();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            ingredients = e.getElementsByClass("wprm-recipe-ingredients").get(0).children();
             String groupName = Jsoup.parse(e.getElementsByClass("wprm-recipe-group-name").html()).text();
             IngredientsGroup group = new IngredientsGroup(groupName);
             for (Element i : ingredients) {

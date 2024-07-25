@@ -2,23 +2,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_sort"
-        android:title="Sort"
+        android:title="@string/text_sort"
         android:icon="@android:drawable/ic_menu_sort_by_size"
         android:orderInCategory="100"
         app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/sort_name_asc"
-                android:title="Sort: Name Asc." />
+                android:title="@string/text_sort_name_asc" />
             <item
                 android:id="@+id/sort_name_desc"
-                android:title="Sort: Name Desc." />
+                android:title="@string/text_sort_name_desc" />
             <item
                 android:id="@+id/sort_date_new"
-                android:title="Sort: Newest" />
+                android:title="@string/text_sort_date_new" />
             <item
                 android:id="@+id/sort_date_old"
-                android:title="Sort: Oldest" />
+                android:title="@string/text_sort_date_old" />
         </menu>
     </item>
 </menu>

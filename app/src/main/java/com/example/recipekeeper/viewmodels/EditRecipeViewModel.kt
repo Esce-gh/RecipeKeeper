@@ -1,19 +1,14 @@
-package com.example.recipekeeper.models
+package com.example.recipekeeper.viewmodels
 
 import android.app.Application
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipekeeper.activities.MainActivity
-import com.example.recipekeeper.data.RecipeDao
-import com.example.recipekeeper.data.RecipeDatabase
-import com.example.recipekeeper.data.RecipeEntity
+import com.example.recipekeeper.repository.RecipeDao
+import com.example.recipekeeper.repository.RecipeDatabase
+import com.example.recipekeeper.repository.RecipeEntity
 import com.example.recipekeeper.scraper.Scraper
-import com.example.recipekeeper.utils.Redirect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -99,23 +94,22 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         _items.value = newItems
     }
 
+    @Throws(Exception::class)
     fun importURL(importUrl: String) {
-        var scraper: Scraper? = null
+        val scraper: Scraper
         try {
             scraper = Scraper(importUrl)
         } catch (e: Exception) {
-            // TODO: error "failed to connect"
-            e.printStackTrace()
+            throw Exception("Failed to connect", e)
         }
-        if (scraper != null) {
-            viewModelScope.launch {
-                withContext(Dispatchers.Main) {
-                    _name.value = scraper.name
-                    _url.value = importUrl
-                    _items.value = scraper.ingredientsList
-                    _instructions.value = scraper.instructions
-                    _notes.value = scraper.notes
-                }
+
+        viewModelScope.launch {
+            withContext(Dispatchers.Main) {
+                _name.value = scraper.name
+                _url.value = importUrl
+                _items.value = scraper.ingredientsList
+                _instructions.value = scraper.instructions
+                _notes.value = scraper.notes
             }
         }
     }

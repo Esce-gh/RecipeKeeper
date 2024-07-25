@@ -1,14 +1,13 @@
-package com.example.recipekeeper.models
+package com.example.recipekeeper.viewmodels
 
 import android.app.Application
-import android.widget.ArrayAdapter
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.recipekeeper.data.RecipeDao
-import com.example.recipekeeper.data.RecipeDatabase
-import com.example.recipekeeper.data.RecipeEntity
+import com.example.recipekeeper.repository.RecipeDao
+import com.example.recipekeeper.repository.RecipeDatabase
+import com.example.recipekeeper.repository.RecipeEntity
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     private val recipeDao: RecipeDao = RecipeDatabase.getDatabase(application).recipeDao()

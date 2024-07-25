@@ -1,26 +1,25 @@
 package com.example.recipekeeper.activities
 
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.widget.Toolbar
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
-import com.example.recipekeeper.adapters.ItemAdapter
-import com.example.recipekeeper.models.ApplicationViewModelFactory
-import com.example.recipekeeper.models.EditRecipeViewModel
+import com.example.recipekeeper.viewmodels.ApplicationViewModelFactory
+import com.example.recipekeeper.viewmodels.EditRecipeViewModel
+import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,9 +37,9 @@ class EditActivity : AppCompatActivity() {
 
         val viewModelFactory = ApplicationViewModelFactory(application, EditRecipeViewModel::class)
         try {
-            viewModel = ViewModelProvider(this, viewModelFactory).get(EditRecipeViewModel::class.java)
+            viewModel = ViewModelProvider(this, viewModelFactory)[EditRecipeViewModel::class.java]
         } catch (e: Exception){
-            e.printStackTrace()
+            Log.e(getString(R.string.error_tag), "${e.message}", e)
         }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -52,10 +51,10 @@ class EditActivity : AppCompatActivity() {
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> getString(R.string.edit_pager_details)
-                1 -> getString(R.string.edit_pager_ingredients)
-                2 -> getString(R.string.edit_pager_instructions)
-                3 -> getString(R.string.edit_pager_notes)
+                0 -> getString(R.string.pager_details)
+                1 -> getString(R.string.pager_ingredients)
+                2 -> getString(R.string.pager_instructions)
+                3 -> getString(R.string.pager_notes)
                 else -> ""
             }
         }.attach()
@@ -82,16 +81,20 @@ class EditActivity : AppCompatActivity() {
         }
 
         buttonOK.setOnClickListener {
-            try {
-                val url = editTextURL.text.toString()
-                executor.execute {
+            val url = editTextURL.text.toString()
+            executor.execute {
+                try {
                     viewModel.importURL(url)
                     handler.post {
                         dialog.dismiss()
                     }
+                } catch (e: Exception) {
+                    Log.e(getString( R.string.error_tag ), e.message, e)
+                    handler.post {
+                        Toast.makeText(this, getString(R.string.error_msg_failed_connection), Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
 
@@ -107,6 +110,18 @@ class EditActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.actionImport -> {
                 showImportDialog()
+                true
+            }
+            R.id.actionSave -> {
+                if (viewModel.editMode) { // check if existing recipe is being changed
+                    viewModel.updateRecipe()
+                    Redirect.redirect(this, SearchActivity::class.java)
+                    Toast.makeText(this, getString(R.string.toast_recipe_modified), Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.insertRecipe()
+                    Redirect.redirect(this, MainActivity::class.java)
+                    Toast.makeText(this, getString(R.string.toast_recipe_added), Toast.LENGTH_SHORT).show()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

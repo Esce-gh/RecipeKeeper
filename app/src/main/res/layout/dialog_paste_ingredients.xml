@@ -9,7 +9,7 @@
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Enter ingredients"
+        android:hint="@string/hint_enter_ingredients"
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:gravity="top"
@@ -26,13 +26,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="@string/text_cancel" />
 
         <Button
             android:id="@+id/buttonOK"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="OK" />
+            android:text="@string/text_confirm" />
     </LinearLayout>
 </LinearLayout>

@@ -17,7 +17,7 @@
                 android:id="@+id/textInputName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name" />
+                android:hint="@string/text_name" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -32,14 +32,14 @@
                 android:id="@+id/textInputURL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="URL" />
+                android:hint="@string/text_url" />
         </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save recipe"
+        android:text="@string/text_save_recipe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

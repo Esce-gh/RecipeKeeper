@@ -6,23 +6,19 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipeAdapter
-import com.example.recipekeeper.models.ApplicationViewModelFactory
-import com.example.recipekeeper.models.SearchViewModel
+import com.example.recipekeeper.viewmodels.ApplicationViewModelFactory
+import com.example.recipekeeper.viewmodels.SearchViewModel
 import com.example.recipekeeper.utils.ToolbarUtil
 import com.google.android.flexbox.FlexboxLayout
 
@@ -35,7 +31,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val viewModelFactory = ApplicationViewModelFactory(application, SearchViewModel::class)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewRecipeList)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -44,7 +40,7 @@ class SearchActivity : AppCompatActivity() {
         ToolbarUtil.InitializeToolbar(this, toolbar, getString(R.string.find_recipe_title))
 
         // TODO: add some info when no recipes are found
-        recipeAdapter = RecipeAdapter() { recipe ->
+        recipeAdapter = RecipeAdapter { recipe ->
             val intent = Intent(this, RecipeActivity::class.java).apply {
                 putExtra(getString(R.string.extra_recipe_id), recipe.id)
             }
@@ -52,9 +48,9 @@ class SearchActivity : AppCompatActivity() {
         }
         recyclerView.adapter = recipeAdapter
 
-        viewModel.recipes.observe(this, Observer { recipes ->
+        viewModel.recipes.observe(this) { recipes ->
             recipes?.let { recipeAdapter.submitList(it) }
-        })
+        }
 
         overrideBackButton()
         initializeTagSearch()

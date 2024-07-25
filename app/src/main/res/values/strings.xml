@@ -1,15 +1,52 @@
 <resources>
     <string name="app_name">RecipeKeeper</string>
-    <string name="recipe_data_file">recipes.dat</string>
+    <string name="database">recipe_database</string>
     <string name="edit_recipe_title">Edit recipe</string>
     <string name="find_recipe_title">Find recipe</string>
 
-    <string name="edit_pager_details">Details</string>
-    <string name="edit_pager_ingredients">Ingredients</string>
-    <string name="edit_pager_instructions">Instructions</string>
-    <string name="edit_pager_notes">Notes</string>
+    <string name="error_tag">AppError</string>
+    <string name="error_msg_failed_connection">Failed to connect</string>
+
+    <string name="pager_details">Details</string>
+    <string name="pager_ingredients">Ingredients</string>
+    <string name="pager_instructions">Instructions</string>
+    <string name="pager_notes">Notes</string>
 
     <string name="extra_edit_mode">EDIT</string>
     <string name="extra_recipe">RECIPE</string>
     <string name="extra_recipe_id">RECIPE_ID</string>
+
+    <string name="dialog_recipe_removal_confirmation">Are you sure you want to delete this recipe?</string>
+
+
+    <string name="toast_recipe_modified">Recipe modified!</string>
+    <string name="toast_recipe_added">Recipe added!</string>
+    <string name="toast_no_ingredients_selected">No selected ingredients!</string>
+
+    <string name="hint_ingredient">Ingredient</string>
+    <string name="hint_enter_notes">Enter notes</string>
+    <string name="hint_enter_ingredient">Enter ingredient</string>
+    <string name="hint_enter_ingredients">Enter ingredients</string>
+    <string name="hint_enter_url">Enter URL</string>
+    <string name="hint_enter_instructions">Enter recipe instructions</string>
+    <string name="hint_search">Search…</string>
+    <string name="text_remove_selected">Remove selected</string>
+    <string name="text_paste_ingredients">Paste ingredients</string>
+    <string name="text_save_recipe">Save recipe</string>
+    <string name="text_name">Name</string>
+    <string name="text_url">URL</string>
+    <string name="text_search">Search</string>
+    <string name="text_add">Add</string>
+    <string name="text_remove">Remove</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_confirm">Confirm</string>
+    <string name="text_edit">Edit</string>
+    <string name="text_import">Import</string>
+    <string name="text_open_browser">Open in browser</string>
+    <string name="text_sort">Sort</string>
+    <string name="text_sort_name_asc">Sort: Name Asc.</string>
+    <string name="text_sort_name_desc">Sort: Name Desc.</string>
+    <string name="text_sort_date_new">Sort: Newest</string>
+    <string name="text_sort_date_old">Sort: Oldest</string>
+
 </resources>

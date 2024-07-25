@@ -1,4 +1,4 @@
-package com.example.recipekeeper.data
+package com.example.recipekeeper.repository
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -14,6 +14,4 @@ data class RecipeEntity(
     val ingredients: ArrayList<String>,
     val instructions: String,
     val notes : String
-) : Serializable {
-    constructor() : this(-1, "", "", ArrayList(), "","")
-}
+) : Serializable

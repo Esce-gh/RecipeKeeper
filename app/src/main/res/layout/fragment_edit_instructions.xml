@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="top|start"
-        android:hint="Enter recipe instructions"
+        android:hint="@string/hint_enter_instructions"
         android:inputType="textMultiLine"
         android:minLines="10"
         android:padding="10dp"

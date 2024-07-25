@@ -1,4 +1,4 @@
-package com.example.recipekeeper.fragments
+package com.example.recipekeeper.fragments.edit
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,12 +10,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.ItemAdapter
-import com.example.recipekeeper.models.EditRecipeViewModel
+import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 
 class IngredientsEditFragment : Fragment() {
     private val viewModel: EditRecipeViewModel by activityViewModels()
@@ -38,11 +37,11 @@ class IngredientsEditFragment : Fragment() {
             showEditDialog(position, false)
         }
         recyclerView.adapter = adapter
-        viewModel.items.observe(viewLifecycleOwner, Observer { items ->
+        viewModel.items.observe(viewLifecycleOwner) { items ->
             if (items != null) {
                 adapter.updateItems(items)
             }
-        })
+        }
 
         val buttonAdd: Button = view.findViewById(R.id.buttonAdd)
         buttonAdd.setOnClickListener {
@@ -55,7 +54,7 @@ class IngredientsEditFragment : Fragment() {
         buttonRemoveSelected.setOnClickListener {
             val selectedItems = adapter.getSelectedItems()
             if (selectedItems.isEmpty()) {
-                Toast.makeText(context, "No selected ingredients!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.toast_no_ingredients_selected), Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.removeSelected(selectedItems)
                 adapter.deselectItems()
@@ -93,7 +92,7 @@ class IngredientsEditFragment : Fragment() {
     private fun showEditDialog(position: Int, newItem: Boolean) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_ingredient, null)
         val editText: EditText = dialogView.findViewById(R.id.editText)
-        editText.hint = "Ingredient"
+        editText.hint = getString(R.string.hint_ingredient)
         editText.setText(viewModel.items.value?.get(position) ?: "")
 
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
