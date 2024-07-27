@@ -10,11 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.ItemAdapter
 import com.example.recipekeeper.viewmodels.EditRecipeViewModel
+import com.example.recipekeeper.viewmodels.IngredientGroup
+import com.example.recipekeeper.viewmodels.ItemTouchHelperCallback
 
 class IngredientsEditFragment : Fragment() {
     private val viewModel: EditRecipeViewModel by activityViewModels()
@@ -33,15 +36,28 @@ class IngredientsEditFragment : Fragment() {
         // recycler view that hold ingredients list
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewIngredients)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        adapter = ItemAdapter(ArrayList()) { position ->
+
+        // TODO: fix
+        val ingredients1 = arrayListOf("a", "b", "c")
+        val ingredients2 = arrayListOf("asd","qwe")
+        val ingredients3 = arrayListOf("trwe","fgsd", "xgysd")
+        val ungrouped = IngredientGroup("", ingredients3)
+        val group1 = IngredientGroup("group1", ingredients1)
+        val group2 = IngredientGroup("group2", ingredients2)
+        val groups = arrayListOf(ungrouped, group1, group2)
+
+        adapter = ItemAdapter(groups) { position ->
             showEditDialog(position, false)
         }
         recyclerView.adapter = adapter
-        viewModel.items.observe(viewLifecycleOwner) { items ->
-            if (items != null) {
-                adapter.updateItems(items)
-            }
-        }
+        val callback = ItemTouchHelperCallback(adapter)
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+//        viewModel.items.observe(viewLifecycleOwner) { items ->
+//            if (items != null) {
+//                adapter.updateItems(items)
+//            }
+//        }
 
         val buttonAdd: Button = view.findViewById(R.id.buttonAdd)
         buttonAdd.setOnClickListener {
