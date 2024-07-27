@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,9 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.ItemAdapter
+import com.example.recipekeeper.utils.ItemTouchHelperCallback
 import com.example.recipekeeper.viewmodels.EditRecipeViewModel
-import com.example.recipekeeper.viewmodels.IngredientGroup
-import com.example.recipekeeper.viewmodels.ItemTouchHelperCallback
 
 class IngredientsEditFragment : Fragment() {
     private val viewModel: EditRecipeViewModel by activityViewModels()
@@ -37,45 +35,36 @@ class IngredientsEditFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewIngredients)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        // TODO: fix
-        val ingredients1 = arrayListOf("a", "b", "c")
-        val ingredients2 = arrayListOf("asd","qwe")
-        val ingredients3 = arrayListOf("trwe","fgsd", "xgysd")
-        val ungrouped = IngredientGroup("", ingredients3)
-        val group1 = IngredientGroup("group1", ingredients1)
-        val group2 = IngredientGroup("group2", ingredients2)
-        val groups = arrayListOf(ungrouped, group1, group2)
-
-        adapter = ItemAdapter(groups) { position ->
+        adapter = ItemAdapter(ArrayList()) { position ->
             showEditDialog(position, false)
         }
         recyclerView.adapter = adapter
         val callback = ItemTouchHelperCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
-//        viewModel.items.observe(viewLifecycleOwner) { items ->
-//            if (items != null) {
-//                adapter.updateItems(items)
-//            }
-//        }
+        viewModel.items.observe(viewLifecycleOwner) { items ->
+            if (items != null) {
+                adapter.updateItems(items)
+            }
+        }
 
         val buttonAdd: Button = view.findViewById(R.id.buttonAdd)
         buttonAdd.setOnClickListener {
             val item = ""
             viewModel.addItem(item)
-            showEditDialog((viewModel.items.value?.size ?: 1) - 1, true)
+            showEditDialog((viewModel.items.value?.get(0)?.ingredients?.size ?: 1), true)
         }
 
-        val buttonRemoveSelected: Button = view.findViewById(R.id.buttonRemoveSelected)
-        buttonRemoveSelected.setOnClickListener {
-            val selectedItems = adapter.getSelectedItems()
-            if (selectedItems.isEmpty()) {
-                Toast.makeText(context, getString(R.string.toast_no_ingredients_selected), Toast.LENGTH_SHORT).show()
-            } else {
-                viewModel.removeSelected(selectedItems)
-                adapter.deselectItems()
-            }
-        }
+//        val buttonRemoveSelected: Button = view.findViewById(R.id.buttonRemoveSelected)
+//        buttonRemoveSelected.setOnClickListener {
+//            val selectedItems = adapter.getSelectedItems()
+//            if (selectedItems.isEmpty()) {
+//                Toast.makeText(context, getString(R.string.toast_no_ingredients_selected), Toast.LENGTH_SHORT).show()
+//            } else {
+//                viewModel.removeSelected(selectedItems)
+//                adapter.deselectItems()
+//            }
+//        }
 
         val buttonPaste: Button = view.findViewById(R.id.buttonPaste)
         buttonPaste.setOnClickListener {
@@ -109,7 +98,11 @@ class IngredientsEditFragment : Fragment() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_ingredient, null)
         val editText: EditText = dialogView.findViewById(R.id.editText)
         editText.hint = getString(R.string.hint_ingredient)
-        editText.setText(viewModel.items.value?.get(position) ?: "")
+
+        val items = viewModel.items.value
+        if (items != null) {
+            editText.setText(viewModel.getIngredient(position))
+        }
 
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
         val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)

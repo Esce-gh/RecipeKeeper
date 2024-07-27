@@ -6,12 +6,17 @@ import java.util.List;
 
 public class IngredientsGroup implements Serializable
 {
-    private final String name;
-    private List<String> ingredients = new ArrayList<>();
+    public final String name;
+    public ArrayList<String> ingredients = new ArrayList<>();
 
     public IngredientsGroup(String name)
     {
         this.name = name;
+    }
+
+    public IngredientsGroup(String name, ArrayList<String> ingredients) {
+        this.name = name;
+        this.ingredients = ingredients;
     }
 
     public String getName()
@@ -19,7 +24,7 @@ public class IngredientsGroup implements Serializable
         return name;
     }
 
-    public List<String> getIngredients()
+    public ArrayList<String> getIngredients()
     {
         return ingredients;
     }

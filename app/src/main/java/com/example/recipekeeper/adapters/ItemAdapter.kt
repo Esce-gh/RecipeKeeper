@@ -8,11 +8,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
-import com.example.recipekeeper.viewmodels.IngredientGroup
+import com.example.recipekeeper.scraper.IngredientsGroup
 import java.util.Collections
 
 class ItemAdapter(
-    private var groups: ArrayList<IngredientGroup>,
+    private var groups: ArrayList<IngredientsGroup>,
     private val onEditClick: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     // TODO: fix
@@ -68,7 +68,7 @@ class ItemAdapter(
                 holder.groupName.visibility = View.GONE
                 holder.groupName.isEnabled = false
                 holder.groupName.isClickable = false
-            }else {
+            } else {
                 holder.groupName.visibility = View.VISIBLE
                 holder.groupName.isEnabled = true
                 holder.groupName.isClickable = true
@@ -134,7 +134,7 @@ class ItemAdapter(
         return -1
     }
 
-    fun updateItems(newGroups: ArrayList<IngredientGroup>) {
+    fun updateItems(newGroups: ArrayList<IngredientsGroup>) {
         groups = newGroups
         notifyDataSetChanged()
     }
@@ -177,6 +177,8 @@ class ItemAdapter(
                 toGroup.ingredients.add(toIngredient, ingredient)
             }
             notifyItemMoved(fromPosition, toPosition)
+            notifyItemChanged(fromPosition)
+            notifyItemChanged(toPosition)
         }
     }
 

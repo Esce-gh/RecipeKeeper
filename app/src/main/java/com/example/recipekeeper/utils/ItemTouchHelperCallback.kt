@@ -1,4 +1,4 @@
-package com.example.recipekeeper.viewmodels
+package com.example.recipekeeper.utils
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
