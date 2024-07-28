@@ -13,7 +13,6 @@ import com.example.recipekeeper.R
 // - hold and select recipes to remove
 //
 // Features:
-// - ingredient groups
 //
 // SOON(TM):
 // - GUI that actually looks like something

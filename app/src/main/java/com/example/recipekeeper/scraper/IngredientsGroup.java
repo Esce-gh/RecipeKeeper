@@ -2,24 +2,23 @@ package com.example.recipekeeper.scraper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class IngredientsGroup implements Serializable
 {
-    private final String name;
-    private List<String> ingredients = new ArrayList<>();
+    public String name;
+    public ArrayList<String> ingredients = new ArrayList<>();
 
     public IngredientsGroup(String name)
     {
         this.name = name;
     }
 
-    public String getName()
-    {
-        return name;
+    public IngredientsGroup(String name, ArrayList<String> ingredients) {
+        this.name = name;
+        this.ingredients = ingredients;
     }
 
-    public List<String> getIngredients()
+    public ArrayList<String> getIngredients()
     {
         return ingredients;
     }
@@ -27,5 +26,9 @@ public class IngredientsGroup implements Serializable
     public void addIngredient(String i)
     {
         ingredients.add(i);
+    }
+
+    public void addIngredient(ArrayList<String> items) {
+        ingredients.addAll(items);
     }
 }

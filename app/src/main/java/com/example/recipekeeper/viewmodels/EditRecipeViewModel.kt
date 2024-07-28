@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipekeeper.repository.RecipeDao
 import com.example.recipekeeper.repository.RecipeDatabase
 import com.example.recipekeeper.repository.RecipeEntity
+import com.example.recipekeeper.scraper.IngredientsGroup
 import com.example.recipekeeper.scraper.Scraper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +21,8 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
     val name: LiveData<String> get() = _name
     private val _url = MutableLiveData<String>()
     val url: LiveData<String> get() = _url
-    private val _items = MutableLiveData<ArrayList<String>>()
-    val items: LiveData<ArrayList<String>> get() = _items
+    private val _items = MutableLiveData<ArrayList<IngredientsGroup>>()
+    val items: LiveData<ArrayList<IngredientsGroup>> get() = _items
     private val _instructions = MutableLiveData<String>()
     val instructions: LiveData<String> get() = _instructions
     private val _notes = MutableLiveData<String>()
@@ -29,6 +30,10 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
 
     var editMode: Boolean = false
     var recipeID: Int? = null
+
+    init {
+        _items.value = arrayListOf(IngredientsGroup(""))
+    }
 
     fun insertRecipe() {
         viewModelScope.launch {
@@ -63,34 +68,66 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
 
     fun addItem(item: String) {
         val currentItems = _items.value ?: ArrayList()
-        currentItems.add(item)
+        currentItems[0].addIngredient(item)
+        _items.value = currentItems
+    }
+
+    fun addGroup(name: String) {
+        val currentItems = _items.value ?: ArrayList()
+        currentItems.add(1, IngredientsGroup(name))
         _items.value = currentItems
     }
 
     fun editItem(position: Int, newItem: String) {
-        val currentItems = _items.value
-        if (currentItems != null && position < currentItems.size) {
-            currentItems[position] = newItem
-            _items.value = ArrayList(currentItems) // Trigger LiveData update
+        val currentItems = _items.value ?: ArrayList()
+        val currentGroup = currentItems[getGroupIndex(position)]
+        val ingredientPosition = getIngredientIndex(position)
+        if (ingredientPosition == -1) { // edit group
+            currentGroup.name = newItem
+        } else {
+            currentGroup.ingredients[ingredientPosition] = newItem
         }
+        _items.value = currentItems
     }
 
     fun removeItem(position: Int) {
         val currentItems = _items.value ?: ArrayList()
-        currentItems.removeAt(position)
+        val currentGroup = currentItems[getGroupIndex(position)]
+        val ingredientPosition = getIngredientIndex(position)
+        if (ingredientPosition == -1) { // removing group
+            currentItems[0].addIngredient(currentGroup.ingredients)
+            currentItems.remove(currentGroup)
+        } else {
+            currentGroup.ingredients.removeAt(ingredientPosition)
+        }
         _items.value = currentItems
     }
 
     fun removeSelected(indexes: List<Int>) {
-        val currentItems = _items.value
-        val newItems = ArrayList<String>()
-        if (currentItems != null) {
-            for (i in 0..<currentItems.size) {
-                if (!indexes.contains(i)) {
-                    newItems.add(currentItems[i])
+        val newItems = ArrayList<IngredientsGroup>()
+        newItems.add(IngredientsGroup(""))
+        val currentItems = _items.value ?: ArrayList()
+        for (i in currentItems.indices) {
+            val newIngredients = ArrayList<String>()
+            var groupRemove = false
+            val lowerBound = getGroupPosition(i)
+            val upperBound = lowerBound + currentItems[i].ingredients.size
+
+            for (j in lowerBound..upperBound) {
+                if (indexes.contains(j) && j == lowerBound) {
+                    groupRemove = true
+                } else if (!indexes.contains(j) && j != lowerBound) {
+                    newIngredients.add(getIngredientOrGroup(j))
                 }
             }
+
+            if (groupRemove || currentItems[i].name == "") {
+                newItems[0].addIngredient(newIngredients)
+            } else {
+                newItems.add(IngredientsGroup(currentItems[i].name, newIngredients))
+            }
         }
+
         _items.value = newItems
     }
 
@@ -107,15 +144,23 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
             withContext(Dispatchers.Main) {
                 _name.value = scraper.name
                 _url.value = importUrl
-                _items.value = scraper.ingredientsList
                 _instructions.value = scraper.instructions
                 _notes.value = scraper.notes
+                val groups = scraper.ingredientsGroups
+                if (!groups.any { group ->
+                        group.name == ""
+                    }) {
+                    groups.add(0, IngredientsGroup(""))
+                }
+                _items.value = groups
             }
         }
     }
 
     fun pasteIngredients(ingredientsString: String) {
-        _items.value = ingredientsString.split("\n").toCollection(ArrayList())
+        val ingredients = ingredientsString.split("\n").toCollection(ArrayList())
+        val group = arrayListOf(IngredientsGroup("", ingredients))
+        _items.value = group
     }
 
     fun loadRecipe(id: Int) = viewModelScope.launch {
@@ -143,5 +188,60 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
 
     fun setNotes(newNotes: String) {
         _notes.value = newNotes
+    }
+
+    fun getGroupPosition(groupIndex: Int): Int {
+        var position = 0
+        val groups = _items.value
+        if (groups != null) {
+            for (i in 0..<groups.size) {
+                if (i != groupIndex) {
+                    position += groups[i].ingredients.size + 1
+                } else {
+                    return position
+                }
+            }
+        }
+        return -1
+    }
+
+    fun getGroupIndex(position: Int): Int {
+        var itemIndex = position
+        val groups = _items.value
+        if (groups != null) {
+            for (i in groups.indices) {
+                if (itemIndex == 0) return i
+                itemIndex--
+                if (itemIndex < groups[i].ingredients.size) return i
+                itemIndex -= groups[i].ingredients.size
+            }
+        }
+        return -1
+    }
+
+    fun getIngredientIndex(position: Int): Int {
+        var count = 0
+        val groups = _items.value
+        if (groups != null) {
+            for (group in groups) {
+                count += 1
+                if (position < count + group.ingredients.size) return position - count
+                count += group.ingredients.size
+            }
+        }
+        return -1
+    }
+
+    fun getIngredientOrGroup(position: Int): String {
+        val groups = _items.value
+        if (groups != null) {
+            val ingredientPosition = getIngredientIndex(position)
+            if (ingredientPosition == -1) {
+                return groups[getGroupIndex(position)].name
+            } else {
+                return groups[getGroupIndex(position)].ingredients[ingredientPosition]
+            }
+        }
+        return ""
     }
 }

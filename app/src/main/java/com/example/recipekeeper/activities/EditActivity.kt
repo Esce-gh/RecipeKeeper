@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
-import com.example.recipekeeper.viewmodels.ApplicationViewModelFactory
+import com.example.recipekeeper.utils.ApplicationViewModelFactory
 import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.utils.ToolbarUtil

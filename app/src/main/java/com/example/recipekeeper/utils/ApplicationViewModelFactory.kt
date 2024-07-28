@@ -1,4 +1,4 @@
-package com.example.recipekeeper.viewmodels
+package com.example.recipekeeper.utils
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

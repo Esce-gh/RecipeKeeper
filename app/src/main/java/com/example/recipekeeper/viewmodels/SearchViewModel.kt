@@ -40,16 +40,16 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun updateResults() {
-        if (queries.value != null && allRecipes.value != null) {
-            _recipes.value = allRecipes.value!!.filter { recipe ->
-                queries.value!!.all { query ->
-                    recipe.name.contains(query, ignoreCase = true
-                    ) || recipe.ingredients.any { ingredient ->
-                        ingredient.contains(query, ignoreCase = true)
-                    }
-                }
-            }
-        }
+//        if (queries.value != null && allRecipes.value != null) {
+//            _recipes.value = allRecipes.value!!.filter { recipe ->
+//                queries.value!!.all { query ->
+//                    recipe.name.contains(query, ignoreCase = true
+//                    ) || recipe.ingredients.any { ingredient ->
+//                        ingredient.contains(query, ignoreCase = true)
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun sortName(ascending: Boolean) {
