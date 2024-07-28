@@ -2,11 +2,10 @@ package com.example.recipekeeper.scraper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class IngredientsGroup implements Serializable
 {
-    public final String name;
+    public String name;
     public ArrayList<String> ingredients = new ArrayList<>();
 
     public IngredientsGroup(String name)
@@ -19,11 +18,6 @@ public class IngredientsGroup implements Serializable
         this.ingredients = ingredients;
     }
 
-    public String getName()
-    {
-        return name;
-    }
-
     public ArrayList<String> getIngredients()
     {
         return ingredients;
@@ -34,7 +28,7 @@ public class IngredientsGroup implements Serializable
         ingredients.add(i);
     }
 
-    public void addIngredients(ArrayList<String> items) {
+    public void addIngredient(ArrayList<String> items) {
         ingredients.addAll(items);
     }
 }

@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
@@ -26,11 +26,12 @@ class ItemAdapter(
 
     class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val groupName: TextView = itemView.findViewById(R.id.textViewGroupName)
+        val buttonEdit: ImageButton = itemView.findViewById(R.id.buttonEdit)
     }
 
     class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemText: TextView = itemView.findViewById(R.id.textViewIngredient)
-        val buttonEdit: Button = itemView.findViewById(R.id.buttonEdit)
+        val buttonEdit: ImageButton = itemView.findViewById(R.id.buttonEdit)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -68,6 +69,13 @@ class ItemAdapter(
             } else {
                 holder.groupName.visibility = View.VISIBLE
                 holder.itemView.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+            }
+            if (onEditClick != null) {
+                holder.buttonEdit.setOnClickListener {
+                    onEditClick.invoke(position)
+                }
+            } else {
+                holder.buttonEdit.visibility = View.INVISIBLE
             }
         } else if (holder is IngredientViewHolder) {
             val ingredientIndex = getIngredientIndex(position)

@@ -30,6 +30,7 @@
     <string name="hint_enter_url">Enter URL</string>
     <string name="hint_enter_instructions">Enter recipe instructions</string>
     <string name="hint_search">Search…</string>
+    <string name="hint_enter_name">Enter item/group name</string>
     <string name="text_remove_selected">Remove selected</string>
     <string name="text_paste_ingredients">Paste ingredients</string>
     <string name="text_save_recipe">Save recipe</string>
@@ -48,5 +49,6 @@
     <string name="text_sort_name_desc">Sort: Name Desc.</string>
     <string name="text_sort_date_new">Sort: Newest</string>
     <string name="text_sort_date_old">Sort: Oldest</string>
+    <string name="text_group">Ingredients group</string>
 
 </resources>

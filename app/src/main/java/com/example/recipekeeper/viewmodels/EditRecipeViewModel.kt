@@ -72,17 +72,34 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         _items.value = currentItems
     }
 
+    fun addGroup(name: String) {
+        val currentItems = _items.value ?: ArrayList()
+        currentItems.add(1, IngredientsGroup(name))
+        _items.value = currentItems
+    }
+
     fun editItem(position: Int, newItem: String) {
         val currentItems = _items.value ?: ArrayList()
         val currentGroup = currentItems[getGroupIndex(position)]
-        currentGroup.ingredients[getIngredientIndex(position)] = newItem
+        val ingredientPosition = getIngredientIndex(position)
+        if (ingredientPosition == -1) { // edit group
+            currentGroup.name = newItem
+        } else {
+            currentGroup.ingredients[ingredientPosition] = newItem
+        }
         _items.value = currentItems
     }
 
     fun removeItem(position: Int) {
         val currentItems = _items.value ?: ArrayList()
         val currentGroup = currentItems[getGroupIndex(position)]
-        currentGroup.ingredients.removeAt(getIngredientIndex(position))
+        val ingredientPosition = getIngredientIndex(position)
+        if (ingredientPosition == -1) { // removing group
+            currentItems[0].addIngredient(currentGroup.ingredients)
+            currentItems.remove(currentGroup)
+        } else {
+            currentGroup.ingredients.removeAt(ingredientPosition)
+        }
         _items.value = currentItems
     }
 
@@ -100,12 +117,12 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
                 if (indexes.contains(j) && j == lowerBound) {
                     groupRemove = true
                 } else if (!indexes.contains(j) && j != lowerBound) {
-                    newIngredients.add(getIngredient(j))
+                    newIngredients.add(getIngredientOrGroup(j))
                 }
             }
 
             if (groupRemove || currentItems[i].name == "") {
-                newItems[0].addIngredients(newIngredients)
+                newItems[0].addIngredient(newIngredients)
             } else {
                 newItems.add(IngredientsGroup(currentItems[i].name, newIngredients))
             }
@@ -215,10 +232,15 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         return -1
     }
 
-    fun getIngredient(position: Int): String {
+    fun getIngredientOrGroup(position: Int): String {
         val groups = _items.value
         if (groups != null) {
-            return groups[getGroupIndex(position)].ingredients[getIngredientIndex(position)]
+            val ingredientPosition = getIngredientIndex(position)
+            if (ingredientPosition == -1) {
+                return groups[getGroupIndex(position)].name
+            } else {
+                return groups[getGroupIndex(position)].ingredients[ingredientPosition]
+            }
         }
         return ""
     }

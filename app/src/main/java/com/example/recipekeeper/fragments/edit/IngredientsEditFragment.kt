@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -51,16 +52,18 @@ class IngredientsEditFragment : Fragment() {
 
         val buttonAdd: Button = view.findViewById(R.id.buttonAdd)
         buttonAdd.setOnClickListener {
-            val item = ""
-            viewModel.addItem(item)
-            showEditDialog((viewModel.items.value?.get(0)?.ingredients?.size ?: 1), true)
+            showEditDialog(-1, true)
         }
 
         val buttonRemoveSelected: Button = view.findViewById(R.id.buttonRemoveSelected)
         buttonRemoveSelected.setOnClickListener {
             val selectedItems = adapter.getSelectedItems()
             if (selectedItems.isEmpty()) {
-                Toast.makeText(context, getString(R.string.toast_no_ingredients_selected), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.toast_no_ingredients_selected),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 viewModel.removeSelected(selectedItems)
                 adapter.deselectItems()
@@ -74,7 +77,8 @@ class IngredientsEditFragment : Fragment() {
     }
 
     private fun showPasteDialog() {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_paste_ingredients, null)
+        val dialogView =
+            LayoutInflater.from(context).inflate(R.layout.dialog_paste_ingredients, null)
         val editText: EditText = dialogView.findViewById(R.id.editText)
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
         val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)
@@ -98,11 +102,11 @@ class IngredientsEditFragment : Fragment() {
     private fun showEditDialog(position: Int, newItem: Boolean) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_ingredient, null)
         val editText: EditText = dialogView.findViewById(R.id.editText)
-        editText.hint = getString(R.string.hint_ingredient)
+        val checkBoxGroup: CheckBox = dialogView.findViewById(R.id.checkBoxGroup)
 
         val items = viewModel.items.value
-        if (items != null) {
-            editText.setText(viewModel.getIngredient(position))
+        if (items != null && !newItem) {
+            editText.setText(viewModel.getIngredientOrGroup(position))
         }
 
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
@@ -114,19 +118,27 @@ class IngredientsEditFragment : Fragment() {
             .create()
 
         buttonCancel.setOnClickListener {
-            if (newItem) {
+            dialog.dismiss()
+        }
+
+        buttonRemove.setOnClickListener {
+            if (!newItem) {
                 viewModel.removeItem(position)
             }
             dialog.dismiss()
         }
 
-        buttonRemove.setOnClickListener {
-            viewModel.removeItem(position)
-            dialog.dismiss()
-        }
-
         buttonOK.setOnClickListener {
-            viewModel.editItem(position, editText.text.toString())
+            val newName = editText.text.toString()
+            if (newItem) {
+                if (checkBoxGroup.isChecked) { // create new group
+                    viewModel.addGroup(newName)
+                } else { // create new item
+                    viewModel.addItem(newName)
+                }
+            } else {
+                viewModel.editItem(position, newName)
+            }
             dialog.dismiss()
         }
 
