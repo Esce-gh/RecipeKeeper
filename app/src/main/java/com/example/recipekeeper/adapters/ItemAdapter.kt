@@ -15,8 +15,7 @@ class ItemAdapter(
     private var groups: ArrayList<IngredientsGroup>,
     private val onEditClick: ((Int) -> Unit)?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    // TODO: fix
-//    constructor(ingredients: ArrayList<String>) : this(ingredients, null)
+    constructor(groups: ArrayList<IngredientsGroup>) : this(groups, null)
 
     companion object {
         private const val VIEW_TYPE_GROUP = 0
@@ -47,7 +46,6 @@ class ItemAdapter(
         return false
     }
 
-    // TODO: long texts won't display properly
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_GROUP) {
             GroupViewHolder(
@@ -66,10 +64,10 @@ class ItemAdapter(
             holder.groupName.text = group.name
             if (group.name == "") {
                 holder.groupName.visibility = View.GONE
-                holder.groupName.isEnabled = false
+                holder.itemView.layoutParams = RecyclerView.LayoutParams(0,0)
             } else {
                 holder.groupName.visibility = View.VISIBLE
-                holder.groupName.isEnabled = true
+                holder.itemView.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
             }
         } else if (holder is IngredientViewHolder) {
             val ingredientIndex = getIngredientIndex(position)
@@ -88,7 +86,7 @@ class ItemAdapter(
         holder.itemView.setOnClickListener {
             if (selectedItems.contains(position)) {
                 selectedItems.remove(position)
-                holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color
+                holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color TODO: fix
             } else {
                 selectedItems.add(position)
                 holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color

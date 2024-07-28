@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipeAdapter
-import com.example.recipekeeper.viewmodels.ApplicationViewModelFactory
-import com.example.recipekeeper.viewmodels.SearchViewModel
+import com.example.recipekeeper.utils.ApplicationViewModelFactory
 import com.example.recipekeeper.utils.ToolbarUtil
+import com.example.recipekeeper.viewmodels.SearchViewModel
 import com.google.android.flexbox.FlexboxLayout
 
 class SearchActivity : AppCompatActivity() {

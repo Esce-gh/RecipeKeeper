@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.RecipePagerAdapter
-import com.example.recipekeeper.viewmodels.ApplicationViewModelFactory
-import com.example.recipekeeper.viewmodels.RecipeViewModel
+import com.example.recipekeeper.utils.ApplicationViewModelFactory
 import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.utils.ToolbarUtil
+import com.example.recipekeeper.viewmodels.RecipeViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
