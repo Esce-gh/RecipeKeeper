@@ -67,28 +67,14 @@ class ItemAdapter(
             if (group.name == "") {
                 holder.groupName.visibility = View.GONE
                 holder.groupName.isEnabled = false
-                holder.groupName.isClickable = false
             } else {
                 holder.groupName.visibility = View.VISIBLE
                 holder.groupName.isEnabled = true
-                holder.groupName.isClickable = true
             }
         } else if (holder is IngredientViewHolder) {
             val ingredientIndex = getIngredientIndex(position)
             val ingredient = groups[getGroupIndex(position)].ingredients[ingredientIndex]
             holder.itemText.text = ingredient
-            holder.itemView.isSelected = selectedItems.contains(position)
-
-            holder.itemView.setOnClickListener {
-                if (selectedItems.contains(position)) {
-                    selectedItems.remove(position)
-                    holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color
-                } else {
-                    selectedItems.add(position)
-                    holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color
-                }
-            }
-
             if (onEditClick != null) {
                 holder.buttonEdit.setOnClickListener {
                     onEditClick.invoke(position)
@@ -96,12 +82,23 @@ class ItemAdapter(
             } else {
                 holder.buttonEdit.visibility = View.INVISIBLE
             }
+        }
+        holder.itemView.isSelected = selectedItems.contains(position)
 
-            if (holder.itemView.isSelected) {
-                holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color
-            } else {
+        holder.itemView.setOnClickListener {
+            if (selectedItems.contains(position)) {
+                selectedItems.remove(position)
                 holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color
+            } else {
+                selectedItems.add(position)
+                holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color
             }
+        }
+
+        if (holder.itemView.isSelected) {
+            holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color
         }
     }
 
@@ -154,6 +151,11 @@ class ItemAdapter(
         }
 
         if (type == VIEW_TYPE_GROUP && toType == VIEW_TYPE_GROUP) {
+            if (fromPosition < toPosition) {
+                updateSelectedGroups(fromPosition, toPosition)
+            } else {
+                updateSelectedGroups(toPosition, fromPosition)
+            }
             Collections.swap(groups, fromGroupIndex, toGroupIndex)
             notifyDataSetChanged()
         } else if (type != VIEW_TYPE_GROUP) {
@@ -176,11 +178,49 @@ class ItemAdapter(
                 val ingredient = fromGroup.ingredients.removeAt(fromIngredient)
                 toGroup.ingredients.add(toIngredient, ingredient)
             }
+            updateSelectedIngredients(fromPosition, toPosition)
             notifyItemMoved(fromPosition, toPosition)
             notifyItemChanged(fromPosition)
             notifyItemChanged(toPosition)
         }
     }
+
+    private fun updateSelectedGroups(lowerIndex: Int, higherIndex: Int) {
+        val updatedSelectedItems = HashSet<Int>()
+
+        val lowerGroupSize = groups[getGroupIndex(lowerIndex)].ingredients.size
+        val higherGroupSize = groups[getGroupIndex(higherIndex)].ingredients.size
+        val endOfLowerGroup = lowerGroupSize + lowerIndex
+        val endOfHigherGroup = higherGroupSize + higherIndex
+
+        for (item in selectedItems) {
+            if (item < lowerIndex || item > endOfHigherGroup) {
+                updatedSelectedItems.add(item)
+            } else if (item in lowerIndex..endOfLowerGroup) {
+                updatedSelectedItems.add(item + higherGroupSize + 1)
+            } else if (item in higherIndex..endOfHigherGroup) {
+                updatedSelectedItems.add(item - lowerGroupSize - 1)
+            }
+        }
+
+        selectedItems.clear()
+        selectedItems.addAll(updatedSelectedItems)
+    }
+
+    private fun updateSelectedIngredients(fromPosition: Int, toPosition: Int) {
+        val updatedSelectedItems = HashSet<Int>()
+        selectedItems.forEach { position ->
+            when {
+                position == fromPosition -> updatedSelectedItems.add(toPosition)
+                position > fromPosition && position <= toPosition -> updatedSelectedItems.add(position - 1)
+                position < fromPosition && position >= toPosition -> updatedSelectedItems.add(position + 1)
+                else -> updatedSelectedItems.add(position)
+            }
+        }
+        selectedItems.clear()
+        selectedItems.addAll(updatedSelectedItems)
+    }
+
 
     fun getSelectedItems(): List<Int> {
         return selectedItems.toList()

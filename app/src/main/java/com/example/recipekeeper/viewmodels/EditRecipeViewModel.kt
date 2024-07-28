@@ -86,18 +86,33 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         _items.value = currentItems
     }
 
-//    fun removeSelected(indexes: List<Int>) {
-//        val currentItems = _items.value
-//        val newItems = ArrayList<String>()
-//        if (currentItems != null) {
-//            for (i in 0..<currentItems.size) {
-//                if (!indexes.contains(i)) {
-//                    newItems.add(currentItems[i])
-//                }
-//            }
-//        }
-//        _items.value = newItems
-//    }
+    fun removeSelected(indexes: List<Int>) {
+        val newItems = ArrayList<IngredientsGroup>()
+        newItems.add(IngredientsGroup(""))
+        val currentItems = _items.value ?: ArrayList()
+        for (i in currentItems.indices) {
+            val newIngredients = ArrayList<String>()
+            var groupRemove = false
+            val lowerBound = getGroupPosition(i)
+            val upperBound = lowerBound + currentItems[i].ingredients.size
+
+            for (j in lowerBound..upperBound) {
+                if (indexes.contains(j) && j == lowerBound) {
+                    groupRemove = true
+                } else if (!indexes.contains(j) && j != lowerBound) {
+                    newIngredients.add(getIngredient(j))
+                }
+            }
+
+            if (groupRemove || currentItems[i].name == "") {
+                newItems[0].addIngredients(newIngredients)
+            } else {
+                newItems.add(IngredientsGroup(currentItems[i].name, newIngredients))
+            }
+        }
+
+        _items.value = newItems
+    }
 
     @Throws(Exception::class)
     fun importURL(importUrl: String) {
@@ -156,6 +171,21 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
 
     fun setNotes(newNotes: String) {
         _notes.value = newNotes
+    }
+
+    fun getGroupPosition(groupIndex: Int): Int {
+        var position = 0
+        val groups = _items.value
+        if (groups != null) {
+            for (i in 0..<groups.size) {
+                if (i != groupIndex) {
+                    position += groups[i].ingredients.size + 1
+                } else {
+                    return position
+                }
+            }
+        }
+        return -1
     }
 
     fun getGroupIndex(position: Int): Int {

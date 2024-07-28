@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -55,16 +56,16 @@ class IngredientsEditFragment : Fragment() {
             showEditDialog((viewModel.items.value?.get(0)?.ingredients?.size ?: 1), true)
         }
 
-//        val buttonRemoveSelected: Button = view.findViewById(R.id.buttonRemoveSelected)
-//        buttonRemoveSelected.setOnClickListener {
-//            val selectedItems = adapter.getSelectedItems()
-//            if (selectedItems.isEmpty()) {
-//                Toast.makeText(context, getString(R.string.toast_no_ingredients_selected), Toast.LENGTH_SHORT).show()
-//            } else {
-//                viewModel.removeSelected(selectedItems)
-//                adapter.deselectItems()
-//            }
-//        }
+        val buttonRemoveSelected: Button = view.findViewById(R.id.buttonRemoveSelected)
+        buttonRemoveSelected.setOnClickListener {
+            val selectedItems = adapter.getSelectedItems()
+            if (selectedItems.isEmpty()) {
+                Toast.makeText(context, getString(R.string.toast_no_ingredients_selected), Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.removeSelected(selectedItems)
+                adapter.deselectItems()
+            }
+        }
 
         val buttonPaste: Button = view.findViewById(R.id.buttonPaste)
         buttonPaste.setOnClickListener {

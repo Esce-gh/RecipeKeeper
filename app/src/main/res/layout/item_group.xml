@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/textViewGroupName"
@@ -12,5 +14,6 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:padding="8dp"
-        android:background="?android:attr/selectableItemBackground" />
+        android:clickable="false"
+        android:focusable="false"/>
 </LinearLayout>

@@ -33,4 +33,8 @@ public class IngredientsGroup implements Serializable
     {
         ingredients.add(i);
     }
+
+    public void addIngredients(ArrayList<String> items) {
+        ingredients.addAll(items);
+    }
 }
