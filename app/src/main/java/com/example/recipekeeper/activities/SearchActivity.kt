@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
@@ -25,10 +27,16 @@ import com.google.android.flexbox.FlexboxLayout
 class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var recipeAdapter: RecipeAdapter
+    private lateinit var buttonRemoveSelected: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        buttonRemoveSelected = findViewById(R.id.buttonDeleteSelected)
+        buttonRemoveSelected.setOnClickListener {
+            deleteSelectedRecipes()
+        }
 
         val viewModelFactory = ApplicationViewModelFactory(application, SearchViewModel::class)
         viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
@@ -40,12 +48,12 @@ class SearchActivity : AppCompatActivity() {
         ToolbarUtil.InitializeToolbar(this, toolbar, getString(R.string.find_recipe_title))
 
         // TODO: add some info when no recipes are found
-        recipeAdapter = RecipeAdapter { recipe ->
+        recipeAdapter = RecipeAdapter({ recipe ->
             val intent = Intent(this, RecipeActivity::class.java).apply {
                 putExtra(getString(R.string.extra_recipe_id), recipe.id)
             }
             startActivity(intent)
-        }
+        }, onSelectionChanged = { updateDeleteButtonVisibility() })
         recyclerView.adapter = recipeAdapter
 
         viewModel.recipes.observe(this) { recipes ->
@@ -111,18 +119,22 @@ class SearchActivity : AppCompatActivity() {
                 viewModel.sortName(true)
                 true
             }
+
             R.id.sort_name_desc -> {
                 viewModel.sortName(false)
                 true
             }
+
             R.id.sort_date_new -> {
                 viewModel.sortId(true)
                 true
             }
+
             R.id.sort_date_old -> {
                 viewModel.sortId(false)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -135,5 +147,20 @@ class SearchActivity : AppCompatActivity() {
                 finish()
             }
         })
+    }
+
+    private fun updateDeleteButtonVisibility() {
+        buttonRemoveSelected.visibility = if (recipeAdapter.getSelectedRecipes().isNotEmpty()) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun deleteSelectedRecipes() {
+        val selectedRecipes = recipeAdapter.getSelectedRecipes()
+        viewModel.removeRecipes(selectedRecipes)
+        recipeAdapter.clearSelection()
+        updateDeleteButtonVisibility()
     }
 }

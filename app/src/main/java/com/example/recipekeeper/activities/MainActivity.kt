@@ -10,7 +10,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.recipekeeper.R
 // TODO: a list of things I want to implement:
 // QOL:
-// - hold and select recipes to remove
 //
 // Features:
 //
