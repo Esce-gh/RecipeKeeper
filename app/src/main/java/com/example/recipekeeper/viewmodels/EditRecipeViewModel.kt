@@ -5,9 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.recipekeeper.repository.RecipeDao
 import com.example.recipekeeper.repository.RecipeDatabase
-import com.example.recipekeeper.repository.RecipeEntity
+import com.example.recipekeeper.repository.dao.RecipeDao
+import com.example.recipekeeper.repository.entities.RecipeEntity
 import com.example.recipekeeper.scraper.IngredientsGroup
 import com.example.recipekeeper.scraper.Scraper
 import kotlinx.coroutines.Dispatchers

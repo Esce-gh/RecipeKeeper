@@ -50,5 +50,7 @@
     <string name="text_sort_date_new">Sort: Newest</string>
     <string name="text_sort_date_old">Sort: Oldest</string>
     <string name="text_group">Ingredients group</string>
+    <string name="text_add_to_shopping_list">Add to shopping list</string>
+    <string name="text_shopping_list_added">Ingredients added to shopping list</string>
 
 </resources>

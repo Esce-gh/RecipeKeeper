@@ -1,4 +1,4 @@
-package com.example.recipekeeper.repository
+package com.example.recipekeeper.repository.converters
 
 import androidx.room.TypeConverter
 import com.example.recipekeeper.scraper.IngredientsGroup
