@@ -42,5 +42,11 @@ class MainActivity : AppCompatActivity()
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
+
+        val buttonShopping: Button = findViewById(R.id.buttonShopping)
+        buttonShopping.setOnClickListener {
+            val intent = Intent(this, ShoppingListActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
