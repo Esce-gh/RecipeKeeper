@@ -2,10 +2,10 @@ package com.example.recipekeeper.utils
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.recipekeeper.adapters.ItemAdapter
+import com.example.recipekeeper.adapters.ItemAdapterEdit
 
 class ItemTouchHelperCallback(
-    private val adapter: ItemAdapter
+    private val adapter: ItemAdapterEdit
 ) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(

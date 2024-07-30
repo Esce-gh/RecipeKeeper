@@ -1,8 +1,9 @@
-package com.example.recipekeeper.repository
+package com.example.recipekeeper.repository.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.example.recipekeeper.repository.converters.Converters
 import com.example.recipekeeper.scraper.IngredientsGroup
 import java.io.Serializable
 

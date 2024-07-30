@@ -1,4 +1,4 @@
-package com.example.recipekeeper.repository
+package com.example.recipekeeper.repository.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.recipekeeper.repository.entities.RecipeEntity
 
 @Dao
 interface RecipeDao {

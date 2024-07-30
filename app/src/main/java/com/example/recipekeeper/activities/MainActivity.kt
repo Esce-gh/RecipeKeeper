@@ -10,7 +10,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.recipekeeper.R
 // TODO: a list of things I want to implement:
 // QOL:
-// - hold and select recipes to remove
 //
 // Features:
 //
@@ -41,6 +40,12 @@ class MainActivity : AppCompatActivity()
         val buttonSearch: Button = findViewById(R.id.buttonSearch)
         buttonSearch.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
+
+        val buttonShopping: Button = findViewById(R.id.buttonShopping)
+        buttonShopping.setOnClickListener {
+            val intent = Intent(this, ShoppingListActivity::class.java)
             startActivity(intent)
         }
     }

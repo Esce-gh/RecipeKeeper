@@ -15,13 +15,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
-import com.example.recipekeeper.adapters.ItemAdapter
+import com.example.recipekeeper.adapters.ItemAdapterEdit
 import com.example.recipekeeper.utils.ItemTouchHelperCallback
 import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 
 class IngredientsEditFragment : Fragment() {
     private val viewModel: EditRecipeViewModel by activityViewModels()
-    private lateinit var adapter: ItemAdapter
+    private lateinit var adapter: ItemAdapterEdit
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,7 @@ class IngredientsEditFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewIngredients)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        adapter = ItemAdapter(ArrayList()) { position ->
+        adapter = ItemAdapterEdit(ArrayList()) { position ->
             showEditDialog(position, false)
         }
         recyclerView.adapter = adapter
