@@ -6,7 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.recipekeeper.fragments.edit.DetailsEditFragment
 import com.example.recipekeeper.fragments.edit.IngredientsEditFragment
 import com.example.recipekeeper.fragments.edit.InstructionsEditFragment
-import com.example.recipekeeper.fragments.view.NotesEditFragment
+import com.example.recipekeeper.fragments.edit.NotesEditFragment
 
 class EditPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int = 4  // Number of fragments

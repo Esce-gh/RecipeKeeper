@@ -66,7 +66,7 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    private fun showImportDialog() {
+     fun showImportDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_import_url, null)
         val editTextURL: EditText = dialogView.findViewById(R.id.editText)
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
@@ -113,7 +113,10 @@ class EditActivity : AppCompatActivity() {
                 true
             }
             R.id.actionSave -> {
-                if (viewModel.editMode) { // check if existing recipe is being changed
+                if (viewModel.name.value?.trim().isNullOrEmpty()) {
+                    Toast.makeText(this, getString(R.string.toast_invalid_name), Toast.LENGTH_SHORT).show()
+                }
+                else if (viewModel.editMode) { // check if existing recipe is being changed
                     viewModel.updateRecipe()
                     Redirect.redirect(this, SearchActivity::class.java)
                     Toast.makeText(this, getString(R.string.toast_recipe_modified), Toast.LENGTH_SHORT).show()

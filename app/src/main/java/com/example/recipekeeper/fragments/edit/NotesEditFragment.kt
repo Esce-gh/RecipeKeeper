@@ -1,4 +1,4 @@
-package com.example.recipekeeper.fragments.view
+package com.example.recipekeeper.fragments.edit
 
 import android.os.Bundle
 import android.text.Editable

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +39,7 @@ class RecipeAdapter(
 
         // Set background based on selection state
         if (selectedItems.contains(recipe.id)) {
-            holder.itemContainer.setBackgroundColor(Color.LTGRAY) // Highlight color
+            holder.itemContainer.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)) // Highlight color
         } else {
             holder.itemContainer.setBackgroundColor(Color.TRANSPARENT) // Default color
         }

@@ -1,7 +1,7 @@
 package com.example.recipekeeper.activities
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
@@ -12,8 +12,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +37,7 @@ class SearchActivity : AppCompatActivity() {
 
         buttonRemoveSelected = findViewById(R.id.buttonDeleteSelected)
         buttonRemoveSelected.setOnClickListener {
-            deleteSelectedRecipes()
+            removeDialog()
         }
 
         val viewModelFactory = ApplicationViewModelFactory(application, SearchViewModel::class)
@@ -70,7 +72,7 @@ class SearchActivity : AppCompatActivity() {
         ingredientEditText.setOnEditorActionListener { view, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent?.keyCode == KeyEvent.KEYCODE_ENTER) {
                 addTag(ingredientEditText)
-                displayTags(tagsContainer)
+                displayTags(tagsContainer, this)
             }
             return@setOnEditorActionListener true
         }
@@ -85,12 +87,13 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayTags(tagsContainer: FlexboxLayout) {
+    private fun displayTags(tagsContainer: FlexboxLayout, context: Context) {
         tagsContainer.removeAllViews()
         viewModel.queries.value?.forEach { ingredient ->
             val tagView = TextView(this).apply {
                 text = ingredient
-                setBackgroundColor(Color.LTGRAY)
+                setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                setTextColor(ContextCompat.getColor(context, R.color.colorTextLight))
                 setPadding(8, 8, 8, 8)
                 layoutParams = FlexboxLayout.LayoutParams(
                     FlexboxLayout.LayoutParams.WRAP_CONTENT,
@@ -100,7 +103,7 @@ class SearchActivity : AppCompatActivity() {
                 }
                 setOnClickListener {
                     viewModel.removeQuery(ingredient)
-                    displayTags(tagsContainer)
+                    displayTags(tagsContainer, context)
                     viewModel.updateResults()
                 }
             }
@@ -157,10 +160,16 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteSelectedRecipes() {// TODO: add dialog
-        val selectedRecipes = recipeAdapter.getSelectedRecipes()
-        viewModel.removeRecipes(selectedRecipes)
-        recipeAdapter.clearSelection()
-        updateDeleteButtonVisibility()
+    private fun removeDialog() {
+        AlertDialog.Builder(this)
+            .setMessage(getString(R.string.dialog_recipe_selection_removal))
+            .setPositiveButton(getString(R.string.text_confirm)) { _, _ ->
+                val selectedRecipes = recipeAdapter.getSelectedRecipes()
+                viewModel.removeRecipes(selectedRecipes)
+                recipeAdapter.clearSelection()
+                updateDeleteButtonVisibility()
+            }
+            .setNegativeButton(getString(R.string.text_cancel), null)
+            .show()
     }
 }

@@ -14,8 +14,8 @@ import androidx.fragment.app.activityViewModels
 import com.example.recipekeeper.R
 import com.example.recipekeeper.activities.MainActivity
 import com.example.recipekeeper.activities.SearchActivity
-import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 import com.example.recipekeeper.utils.Redirect
+import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 import com.google.android.material.textfield.TextInputEditText
 
 class DetailsEditFragment : Fragment() {
@@ -66,7 +66,10 @@ class DetailsEditFragment : Fragment() {
         val buttonConfirm: Button = view.findViewById(R.id.buttonConfirm)
         buttonConfirm.setOnClickListener {
             context?.let { con ->
-                if (viewModel.editMode) { // check if existing recipe is being changed
+                if (viewModel.name.value?.trim().isNullOrEmpty()) {
+                    Toast.makeText(con, getString(R.string.toast_invalid_name), Toast.LENGTH_SHORT).show()
+                }
+                else if (viewModel.editMode) { // check if existing recipe is being changed
                     viewModel.updateRecipe()
                     Redirect.redirect(con, SearchActivity::class.java)
                     Toast.makeText(con, getString(R.string.toast_recipe_modified), Toast.LENGTH_SHORT).show()

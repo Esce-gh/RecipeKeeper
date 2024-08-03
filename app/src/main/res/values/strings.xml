@@ -18,10 +18,12 @@
 
     <string name="dialog_recipe_removal_confirmation">Are you sure you want to remove this recipe?</string>
     <string name="dialog_shopping_list_removal">Are you sure you want to remove all items?</string>
+    <string name="dialog_recipe_selection_removal">Are you sure you want to remove selected recipes?</string>
 
     <string name="toast_recipe_modified">Recipe modified!</string>
     <string name="toast_recipe_added">Recipe added!</string>
     <string name="toast_no_ingredients_selected">No selected ingredients!</string>
+    <string name="toast_invalid_name">Invalid name!</string>
 
     <string name="hint_ingredient">Ingredient</string>
     <string name="hint_enter_notes">Enter notes</string>

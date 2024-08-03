@@ -1,5 +1,6 @@
 package com.example.recipekeeper.adapters
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -43,7 +44,7 @@ class ItemAdapterEdit(
         holder.itemView.setOnClickListener {
             if (selectedItems.contains(position)) {
                 selectedItems.remove(position)
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondary)) // Default color
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT) // Default color
             } else {
                 selectedItems.add(position)
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)) // Highlight color
@@ -53,7 +54,7 @@ class ItemAdapterEdit(
         if (selectedItems.contains(position)) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)) // Highlight color
         } else {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondary)) // Default color
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT) // Default color
         }
     }
 
