@@ -54,5 +54,8 @@
     <string name="text_shopping_list_added">Ingredients added to shopping list</string>
     <string name="text_shopping_list">Shopping list</string>
     <string name="text_remove_all">Remove all</string>
+    <string name="text_format">Format</string>
+    <string name="text_format_numbers">Numbering</string>
+    <string name="text_format_new_lines">Add line breaks</string>
 
 </resources>

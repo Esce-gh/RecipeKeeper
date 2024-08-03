@@ -21,6 +21,7 @@
             android:layout_margin="10dp"
             android:layout_width="110dp"
             android:layout_height="60dp"
+            android:textSize="12sp"
             android:text="@string/text_search" />
 
         <Button
@@ -28,6 +29,7 @@
             android:layout_margin="10dp"
             android:layout_width="110dp"
             android:layout_height="60dp"
+            android:textSize="12sp"
             android:text="@string/text_shopping_list" />
 
         <Button
@@ -35,6 +37,7 @@
             android:layout_margin="10dp"
             android:layout_width="110dp"
             android:layout_height="60dp"
+            android:textSize="12sp"
             android:text="@string/text_add" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

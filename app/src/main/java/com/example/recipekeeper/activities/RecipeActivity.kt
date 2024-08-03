@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
@@ -38,6 +39,7 @@ class RecipeActivity : AppCompatActivity() {
         }
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         ToolbarUtil.InitializeToolbar(this, toolbar, "")
+        toolbar.overflowIcon = ContextCompat.getDrawable(this, R.drawable.ic_more)
 
         viewModel.recipe.observe(this) { recipe ->
             toolbar.setTitle(recipe?.name)

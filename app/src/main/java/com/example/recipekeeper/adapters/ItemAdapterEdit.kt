@@ -1,9 +1,10 @@
 package com.example.recipekeeper.adapters
 
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipekeeper.R
 import com.example.recipekeeper.scraper.IngredientsGroup
 import java.util.Collections
 
@@ -42,17 +43,17 @@ class ItemAdapterEdit(
         holder.itemView.setOnClickListener {
             if (selectedItems.contains(position)) {
                 selectedItems.remove(position)
-                holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color TODO: fix
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondary)) // Default color
             } else {
                 selectedItems.add(position)
-                holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)) // Highlight color
             }
         }
 
-        if (holder.itemView.isSelected) {
-            holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color
+        if (selectedItems.contains(position)) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary)) // Highlight color
         } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondary)) // Default color
         }
     }
 

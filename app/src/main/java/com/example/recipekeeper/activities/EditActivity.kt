@@ -18,9 +18,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
 import com.example.recipekeeper.utils.ApplicationViewModelFactory
-import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.utils.ToolbarUtil
+import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.concurrent.Executors

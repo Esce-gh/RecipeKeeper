@@ -15,7 +15,6 @@ import com.example.recipekeeper.R
 //
 // SOON(TM):
 // - GUI that actually looks like something
-// - shopping cart feature
 // - recipe thumbnails
 
 class MainActivity : AppCompatActivity()

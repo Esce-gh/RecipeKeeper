@@ -57,12 +57,12 @@ public class Scraper {
 
         Elements instructionsContainer = doc.getElementsByClass("wprm-recipe-instruction-text");
         for (int i = 0; i < instructionsContainer.size(); i++) {
-            instructions += String.format("%d.", i + 1) + Jsoup.parse((instructionsContainer.get(i).html())).text() + "\n";
+            instructions += String.format("%d.", i + 1) + Jsoup.parse((instructionsContainer.get(i).html())).text() + "\n\n";
         }
 
         Elements notesElements = doc.getElementsByClass("wprm-recipe-notes");
         for (Element e : notesElements) {
-            notes += Jsoup.parse(e.html()).text();
+            notes += Jsoup.parse(e.html()).text() + "\n\n";
         }
 
         Elements name = doc.getElementsByClass("wprm-recipe-name");

@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -50,12 +52,12 @@ class IngredientsEditFragment : Fragment() {
             }
         }
 
-        val buttonAdd: Button = view.findViewById(R.id.buttonAdd)
+        val buttonAdd: ImageButton = view.findViewById(R.id.buttonAdd)
         buttonAdd.setOnClickListener {
             showEditDialog(-1, true)
         }
 
-        val buttonRemoveSelected: Button = view.findViewById(R.id.buttonRemoveSelected)
+        val buttonRemoveSelected: ImageButton = view.findViewById(R.id.buttonRemoveSelected)
         buttonRemoveSelected.setOnClickListener {
             val selectedItems = adapter.getSelectedItems()
             if (selectedItems.isEmpty()) {
@@ -70,7 +72,7 @@ class IngredientsEditFragment : Fragment() {
             }
         }
 
-        val buttonPaste: Button = view.findViewById(R.id.buttonPaste)
+        val buttonPaste: ImageButton = view.findViewById(R.id.buttonPaste)
         buttonPaste.setOnClickListener {
             showPasteDialog()
         }
@@ -107,6 +109,10 @@ class IngredientsEditFragment : Fragment() {
         val items = viewModel.items.value
         if (items != null && !newItem) {
             editText.setText(viewModel.getIngredientOrGroup(position))
+        }
+
+        if (!newItem) {
+            checkBoxGroup.isVisible = false
         }
 
         val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)

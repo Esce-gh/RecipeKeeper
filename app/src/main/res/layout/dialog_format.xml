@@ -5,12 +5,19 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editText"
+    <CheckBox
+        android:id="@+id/checkBoxNumbers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_enter_url"
-        android:inputType="textUri"/>
+        android:textColor="@color/colorTextLight"
+        android:text="@string/text_format_numbers" />
+
+    <CheckBox
+        android:id="@+id/checkBoxNewLines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextLight"
+        android:text="@string/text_format_new_lines" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,17 +30,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/text_cancel"
-            android:backgroundTint="@color/colorSecondaryVariant"
-            android:textColor="@color/colorTextDark"/>
+            android:text="@string/text_cancel" />
 
         <Button
             android:id="@+id/buttonOK"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/text_confirm"
-            android:backgroundTint="@color/ColorPrimaryVariant"
-            android:textColor="@color/colorTextDark"/>
+            android:text="@string/text_confirm" />
     </LinearLayout>
 </LinearLayout>

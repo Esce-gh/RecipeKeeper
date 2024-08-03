@@ -6,7 +6,10 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.recipekeeper.R
@@ -42,5 +45,34 @@ class InstructionsEditFragment : Fragment() {
                 viewModel.setInstructions(s.toString())
             }
         })
+
+        val buttonFormat: Button = view.findViewById(R.id.buttonFormat)
+        buttonFormat.setOnClickListener {
+            showFormatDialog()
+        }
+    }
+
+    private fun showFormatDialog() {
+        val dialogView =
+            LayoutInflater.from(context).inflate(R.layout.dialog_format, null)
+        val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
+        val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)
+        val checkBoxNumbers: CheckBox = dialogView.findViewById(R.id.checkBoxNumbers)
+        val checkBoxLines: CheckBox = dialogView.findViewById(R.id.checkBoxNewLines)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        buttonCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        buttonOK.setOnClickListener {
+            viewModel.formatInstructions(checkBoxNumbers.isChecked, checkBoxLines.isChecked)
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }

@@ -1,8 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.RecipeKeeper" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorTextLight</item>
+
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorTextLight</item>
+
+        <item name="android:windowBackground">@color/colorSecondary</item>
+        <item name="android:textColorPrimary">@color/colorTextLight</item>
+        <item name="android:textColorSecondary">@color/colorTextDark</item>
+        <item name="android:statusBarColor">@color/colorSecondaryVariant</item>
+
+    </style>
+
+    <style name="DialogPositiveButtonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/colorTextDark</item>
+        <item name="backgroundTint">@color/ColorPrimaryVariant</item>
+    </style>
+
+    <style name="DialogNegativeButtonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/colorTextDark</item>
+        <item name="backgroundTint">@color/colorSecondaryVariant</item>
+    </style>
+
+    <style name="AppTheme.PopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@color/colorTextLight</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="Toolbar.TitleText" parent="@style/Base.TextAppearance.AppCompat.Title">

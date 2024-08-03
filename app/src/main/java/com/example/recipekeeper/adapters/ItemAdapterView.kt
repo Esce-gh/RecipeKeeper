@@ -1,10 +1,11 @@
 package com.example.recipekeeper.adapters
 
-import android.graphics.Color
 import android.graphics.Paint
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipekeeper.R
 import com.example.recipekeeper.scraper.IngredientsGroup
 
 class ItemAdapterView(
@@ -53,19 +54,19 @@ class ItemAdapterView(
             if (selectedItems.contains(position)) {
                 holder.itemText.paintFlags =
                     holder.itemText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.itemText.setTextColor(Color.LTGRAY)
+                holder.itemText.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextDark))
             } else {
                 holder.itemText.paintFlags =
                     holder.itemText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.itemText.setTextColor(Color.BLACK)
+                holder.itemText.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextLight))
             }
         }
 
 
-        if (holder.itemView.isSelected) {
-            holder.itemView.setBackgroundColor(Color.LTGRAY) // Highlight color
+        if (shoppingListItems.contains(position)) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondaryVariant)) // Highlight color
         } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // Default color
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondary)) // Default color
         }
     }
 
@@ -75,24 +76,24 @@ class ItemAdapterView(
                 selectedItems.remove(position)
                 holder.itemText.paintFlags =
                     holder.itemText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.itemText.setTextColor(Color.BLACK)
+                holder.itemText.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextLight))
             } else {
                 selectedItems.add(position)
                 holder.itemText.paintFlags =
                     holder.itemText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.itemText.setTextColor(Color.LTGRAY)
+                holder.itemText.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextDark))
             }
         } else if (holder is GroupViewHolder) {
             if (selectedItems.contains(position)) {
                 selectedItems.remove(position)
                 holder.groupName.paintFlags =
                     holder.groupName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.groupName.setTextColor(Color.BLACK)
+                holder.groupName.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextLight))
             } else {
                 selectedItems.add(position)
                 holder.groupName.paintFlags =
                     holder.groupName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.groupName.setTextColor(Color.LTGRAY)
+                holder.groupName.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextDark))
             }
         }
     }
@@ -100,10 +101,10 @@ class ItemAdapterView(
     private fun handleShoppingCart(holder: RecyclerView.ViewHolder, position: Int) {
         if (shoppingListItems.contains(position)) {
             shoppingListItems.remove(position)
-            holder.itemView.setBackgroundColor(Color.parseColor("#FEF7FF")) // TODO: fix color
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondary))
         } else if (holder.itemViewType == VIEW_TYPE_INGREDIENT) {
             shoppingListItems.add(position)
-            holder.itemView.setBackgroundColor(Color.GRAY)
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorPrimary))
         }
         onSelectionChanged()
     }

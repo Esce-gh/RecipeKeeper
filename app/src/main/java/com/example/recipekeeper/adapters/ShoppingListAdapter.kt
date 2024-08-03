@@ -1,12 +1,12 @@
 package com.example.recipekeeper.adapters
 
-import android.graphics.Color
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipekeeper.R
 import com.example.recipekeeper.repository.entities.ShoppingListEntity
@@ -37,22 +37,22 @@ class ShoppingListAdapter(
                 selectedItems.remove(item.id)
                 holder.textViewIngredient.paintFlags =
                     holder.textViewIngredient.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.textViewIngredient.setTextColor(Color.BLACK)
+                holder.textViewIngredient.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextLight))
             } else {
                 selectedItems.add(item.id)
                 holder.textViewIngredient.paintFlags =
                     holder.textViewIngredient.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.textViewIngredient.setTextColor(Color.LTGRAY)
+                holder.textViewIngredient.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextDark))
             }
         }
         if (!selectedItems.contains(item.id)) {
             holder.textViewIngredient.paintFlags =
                 holder.textViewIngredient.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-            holder.textViewIngredient.setTextColor(Color.BLACK)
+            holder.textViewIngredient.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextLight))
         } else {
             holder.textViewIngredient.paintFlags =
                 holder.textViewIngredient.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            holder.textViewIngredient.setTextColor(Color.LTGRAY)
+            holder.textViewIngredient.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.colorTextDark))
         }
     }
 

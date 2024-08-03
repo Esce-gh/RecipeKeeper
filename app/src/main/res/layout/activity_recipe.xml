@@ -9,9 +9,9 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="?attr/colorSecondaryVariant"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        app:popupTheme="@style/AppTheme.PopupMenu"
         app:titleTextAppearance="@style/Toolbar.TitleText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,15 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:background="?attr/colorPrimary"
-        android:elevation="6dp"
+        android:background="?attr/colorSecondaryVariant"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:tabIndicatorColor="@android:color/white"
+        app:tabIndicatorColor="@color/colorTextLight"
         app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
-        app:tabTextColor="@android:color/white" />
+        app:tabTextColor="@color/colorTextLight" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

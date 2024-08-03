@@ -157,7 +157,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteSelectedRecipes() {
+    private fun deleteSelectedRecipes() {// TODO: add dialog
         val selectedRecipes = recipeAdapter.getSelectedRecipes()
         viewModel.removeRecipes(selectedRecipes)
         recipeAdapter.clearSelection()

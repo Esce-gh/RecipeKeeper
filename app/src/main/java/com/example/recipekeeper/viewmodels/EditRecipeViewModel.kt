@@ -244,4 +244,32 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         }
         return ""
     }
+
+    fun formatInstructions(numbers: Boolean, lines: Boolean) {
+        val string = instructions.value
+        if (string != null) {
+            val steps = string.split("\n")
+
+            val formattedInstructions = StringBuilder()
+
+            var index = 1
+            for (step in steps) {
+                val trimmedStep = step.trim()
+                if (trimmedStep.isEmpty()) {
+                    continue
+                }
+
+                if (numbers) {
+                    formattedInstructions.append("${index}. ")
+                }
+                formattedInstructions.append("$trimmedStep\n")
+                if (lines) {
+                    formattedInstructions.append("\n")
+                }
+                index++
+            }
+
+            _instructions.value = formattedInstructions.toString()
+        }
+    }
 }
