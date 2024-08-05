@@ -158,9 +158,10 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun pasteIngredients(ingredientsString: String) {
-        val ingredients = ingredientsString.split("\n").toCollection(ArrayList())
-        val group = arrayListOf(IngredientsGroup("", ingredients))
-        _items.value = group
+        val ingredients = ingredientsString.split("\n").map{ it.trim() }.toCollection(ArrayList())
+
+//        val group = arrayListOf(IngredientsGroup("", ingredients))
+        _items.value?.get(0)?.addIngredient(ingredients)
     }
 
     fun loadRecipe(id: Int) = viewModelScope.launch {

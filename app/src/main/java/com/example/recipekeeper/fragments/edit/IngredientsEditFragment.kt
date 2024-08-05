@@ -95,6 +95,7 @@ class IngredientsEditFragment : Fragment() {
 
         buttonOK.setOnClickListener {
             viewModel.pasteIngredients(editText.text.toString())
+            adapter.deselectItems()
             dialog.dismiss()
         }
 
