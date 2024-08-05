@@ -30,6 +30,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var recipeAdapter: RecipeAdapter
     private lateinit var buttonRemoveSelected: Button
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
         val viewModelFactory = ApplicationViewModelFactory(application, SearchViewModel::class)
         viewModel = ViewModelProvider(this, viewModelFactory)[SearchViewModel::class.java]
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewRecipeList)
+        recyclerView = findViewById(R.id.recyclerViewRecipeList)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -129,12 +130,12 @@ class SearchActivity : AppCompatActivity() {
             }
 
             R.id.sort_date_new -> {
-                viewModel.sortId(true)
+                viewModel.sortId(false)
                 true
             }
 
             R.id.sort_date_old -> {
-                viewModel.sortId(false)
+                viewModel.sortId(true)
                 true
             }
 

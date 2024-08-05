@@ -37,10 +37,10 @@ class DetailsEditFragment : Fragment() {
         val textInputURL: TextInputEditText = view.findViewById(R.id.textInputURL)
 
         viewModel.name.observe(viewLifecycleOwner) { name ->
-            textInputName.updateTextSafely(name)
+            textInputName.updateTextSafely(name, nameTextWatcher)
         }
         viewModel.url.observe(viewLifecycleOwner) { url ->
-            textInputURL.updateTextSafely(url)
+            textInputURL.updateTextSafely(url, urlTextWatcher)
         }
 
         nameTextWatcher = object : TextWatcher {
@@ -82,12 +82,12 @@ class DetailsEditFragment : Fragment() {
         }
     }
 
-    private fun EditText.updateTextSafely(newText: String) {
+    private fun EditText.updateTextSafely(newText: String, textWatcher: TextWatcher) {
         if (text.toString() != newText) {
-            removeTextChangedListener(nameTextWatcher)
+            removeTextChangedListener(textWatcher)
             setText(newText)
             setSelection(newText.length)
-            addTextChangedListener(nameTextWatcher)
+            addTextChangedListener(textWatcher)
         }
     }
 }
