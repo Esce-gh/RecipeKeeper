@@ -42,4 +42,12 @@ class ShoppingListViewModel(application: Application) : AndroidViewModel(applica
             _items.postValue(updatedShoppingList as ArrayList<ShoppingListEntity>)
         }
     }
+
+    fun addItem(item: String) {
+        viewModelScope.launch {
+            shoppingListDao.insert(ShoppingListEntity(ingredient = item))
+            val updatedShoppingList = shoppingListDao.getAll()
+            _items.postValue(updatedShoppingList as ArrayList<ShoppingListEntity>)
+        }
+    }
 }

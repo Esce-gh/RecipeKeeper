@@ -1,7 +1,11 @@
 package com.example.recipekeeper.activities
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -58,5 +62,42 @@ class ShoppingListActivity : AppCompatActivity() {
             }
             .setNegativeButton(getString(R.string.text_cancel), null)
             .show()
+    }
+
+    fun addDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_to_shopping_list, null)
+        val editText: EditText = dialogView.findViewById(R.id.editText)
+        val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
+        val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        buttonCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        buttonOK.setOnClickListener {
+            viewModel.addItem(editText.text.toString())
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.shopping_list_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.actionAdd -> {
+                addDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

@@ -33,6 +33,8 @@
     <string name="hint_enter_instructions">Enter recipe instructions</string>
     <string name="hint_search">Search…</string>
     <string name="hint_enter_name">Enter item/group name</string>
+    <string name="hint_enter_product">Enter product</string>
+
     <string name="text_remove_selected">Remove selected</string>
     <string name="text_paste_ingredients">Paste ingredients</string>
     <string name="text_save_recipe">Save recipe</string>
