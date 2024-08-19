@@ -1,14 +1,17 @@
 package com.example.recipekeeper.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +37,9 @@ class ShoppingListActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = ShoppingListAdapter(ArrayList())
+        adapter = ShoppingListAdapter(ArrayList()) { position ->
+            showEditDialog(position)
+        }
         recyclerView.adapter = adapter
 
         viewModel.items.observe(this) { items ->
@@ -97,7 +102,61 @@ class ShoppingListActivity : AppCompatActivity() {
                 addDialog()
                 true
             }
+            R.id.actionShare -> {
+                shareIngredients()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showEditDialog(position: Int) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_edit_ingredient, null)
+        val editText: EditText = dialogView.findViewById(R.id.editText)
+        val checkBoxGroup: CheckBox = dialogView.findViewById(R.id.checkBoxGroup)
+        checkBoxGroup.isVisible = false
+
+        val items = viewModel.items.value
+        if (items != null) {
+            editText.setText(items[position].ingredient)
+        }
+
+        val buttonCancel: Button = dialogView.findViewById(R.id.buttonCancel)
+        val buttonOK: Button = dialogView.findViewById(R.id.buttonOK)
+        val buttonRemove: Button = dialogView.findViewById(R.id.buttonRemove)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        buttonCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        buttonRemove.setOnClickListener {
+            viewModel.removeItem(position)
+            dialog.dismiss()
+        }
+
+        buttonOK.setOnClickListener {
+            val newName = editText.text.toString()
+            viewModel.editItem(position, newName)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun shareIngredients() {
+        val ingredients = viewModel.getAllIngredients()
+        val ingredientsText = ingredients.joinToString(separator = "\n")
+
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, ingredientsText)
+            type = "text/plain"
+        }
+
+        startActivity(Intent.createChooser(shareIntent, "Share ingredients via"))
     }
 }

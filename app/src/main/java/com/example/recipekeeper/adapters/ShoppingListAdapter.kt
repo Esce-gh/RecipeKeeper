@@ -12,7 +12,8 @@ import com.example.recipekeeper.R
 import com.example.recipekeeper.repository.entities.ShoppingListEntity
 
 class ShoppingListAdapter(
-    private var items: ArrayList<ShoppingListEntity>
+    private var items: ArrayList<ShoppingListEntity>,
+    private val onEditClick: ((Int) -> Unit)
 ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder>() {
     private val selectedItems = HashSet<Int>()
 
@@ -30,7 +31,10 @@ class ShoppingListAdapter(
     override fun onBindViewHolder(holder: ShoppingListViewHolder, position: Int) {
         val item = items[position]
         holder.textViewIngredient.text = item.ingredient
-        holder.buttonEdit.visibility = View.INVISIBLE
+        holder.buttonEdit.visibility = View.VISIBLE
+        holder.buttonEdit.setOnClickListener {
+            onEditClick.invoke(position)
+        }
 
         holder.itemView.setOnClickListener {
             if (selectedItems.contains(item.id)) {

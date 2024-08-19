@@ -6,4 +6,9 @@
         android:title="@string/text_add_to_shopping_list"
         android:icon="@drawable/ic_add"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/actionShare"
+        android:title="@string/text_share_shopping_list"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="ifRoom" />
 </menu>
