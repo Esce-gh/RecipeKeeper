@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">RecipeKeeper</string>
-    <string name="database">recipe_database</string>
+    <string name="database" translatable="false">recipe_database</string>
     <string name="edit_recipe_title">Edit recipe</string>
     <string name="find_recipe_title">Find recipe</string>
 
-    <string name="error_tag">AppError</string>
+    <string name="error_tag" translatable="false">AppError</string>
     <string name="error_msg_failed_connection">Failed to connect</string>
 
     <string name="pager_details">Details</string>
@@ -12,9 +12,9 @@
     <string name="pager_instructions">Instructions</string>
     <string name="pager_notes">Notes</string>
 
-    <string name="extra_edit_mode">EDIT</string>
-    <string name="extra_recipe">RECIPE</string>
-    <string name="extra_recipe_id">RECIPE_ID</string>
+    <string name="extra_edit_mode" translatable="false">EDIT</string>
+    <string name="extra_recipe" translatable="false">RECIPE</string>
+    <string name="extra_recipe_id" translatable="false">RECIPE_ID</string>
 
     <string name="dialog_recipe_removal_confirmation">Are you sure you want to remove this recipe?</string>
     <string name="dialog_shopping_list_removal">Are you sure you want to remove all items?</string>
