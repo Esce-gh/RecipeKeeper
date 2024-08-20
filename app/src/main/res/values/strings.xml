@@ -62,5 +62,8 @@
     <string name="text_format_numbers">Numbering</string>
     <string name="text_format_new_lines">Add line breaks</string>
     <string name="text_share_shopping_list">Share shopping list</string>
+    <string name="text_importing_recipe">Importing the recipe...</string>
+    <string name="text_import_success">Recipe imported!</string>
+    <string name="error_website_not_supported">Cannot import from this website!</string>
 
 </resources>

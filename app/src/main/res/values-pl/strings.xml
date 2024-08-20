@@ -51,4 +51,7 @@
     <string name="text_format_numbers">Numerowanie</string>
     <string name="text_format_new_lines">Odstępy</string>
     <string name="text_share_shopping_list">Podziel się listą zakupów</string>
+    <string name="text_importing_recipe">Wczytuję przepis...</string>
+    <string name="text_import_success">Wczytano przepis!</string>
+    <string name="error_website_not_supported">Nie można wczytać przepisu z tej strony!</string>
 </resources>

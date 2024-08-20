@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.recipekeeper.R
 import com.example.recipekeeper.adapters.EditPagerAdapter
+import com.example.recipekeeper.scraper.FailedToConnectException
+import com.example.recipekeeper.scraper.WebsiteNotSupportedException
 import com.example.recipekeeper.utils.ApplicationViewModelFactory
 import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.utils.ToolbarUtil
@@ -86,12 +88,19 @@ class EditActivity : AppCompatActivity() {
                 try {
                     viewModel.importURL(url)
                     handler.post {
+                        Toast.makeText(this, getString(R.string.text_import_success), Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
-                } catch (e: Exception) {
+                } catch (e: FailedToConnectException) {
                     Log.e(getString( R.string.error_tag ), e.message, e)
                     handler.post {
                         Toast.makeText(this, getString(R.string.error_msg_failed_connection), Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                } catch (e: WebsiteNotSupportedException) {
+                    Log.e(getString( R.string.error_tag ), e.message, e)
+                    handler.post {
+                        Toast.makeText(this, getString(R.string.error_website_not_supported), Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
                 }

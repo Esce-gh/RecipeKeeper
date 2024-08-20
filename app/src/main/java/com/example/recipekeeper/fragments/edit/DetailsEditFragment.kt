@@ -1,8 +1,11 @@
 package com.example.recipekeeper.fragments.edit
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +17,12 @@ import androidx.fragment.app.activityViewModels
 import com.example.recipekeeper.R
 import com.example.recipekeeper.activities.MainActivity
 import com.example.recipekeeper.activities.SearchActivity
+import com.example.recipekeeper.scraper.FailedToConnectException
+import com.example.recipekeeper.scraper.WebsiteNotSupportedException
 import com.example.recipekeeper.utils.Redirect
 import com.example.recipekeeper.viewmodels.EditRecipeViewModel
 import com.google.android.material.textfield.TextInputEditText
+import java.util.concurrent.Executors
 
 class DetailsEditFragment : Fragment() {
     private val viewModel: EditRecipeViewModel by activityViewModels()
@@ -77,6 +83,33 @@ class DetailsEditFragment : Fragment() {
                     viewModel.insertRecipe()
                     Redirect.redirect(con, MainActivity::class.java)
                     Toast.makeText(con, getString(R.string.toast_recipe_added), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        val buttonImport: Button = view.findViewById(R.id.buttonImport)
+        buttonImport.setOnClickListener {
+            val url = viewModel.url.value ?: ""
+            val executor = Executors.newSingleThreadExecutor()
+            val handler = Handler(Looper.getMainLooper())
+
+            Toast.makeText(context, getString(R.string.text_importing_recipe), Toast.LENGTH_SHORT).show()
+            executor.execute {
+                try {
+                    viewModel.importURL(url)
+                    handler.post {
+                        Toast.makeText(context, getString(R.string.text_import_success), Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: FailedToConnectException) {
+                    Log.e(getString( R.string.error_tag ), e.message, e)
+                    handler.post {
+                        Toast.makeText(context, getString(R.string.error_msg_failed_connection), Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: WebsiteNotSupportedException) {
+                    Log.e(getString( R.string.error_tag ), e.message, e)
+                    handler.post {
+                        Toast.makeText(context, getString(R.string.error_website_not_supported), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

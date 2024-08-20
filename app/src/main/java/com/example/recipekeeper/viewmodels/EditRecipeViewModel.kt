@@ -137,7 +137,7 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
         try {
             scraper = Scraper(importUrl)
         } catch (e: Exception) {
-            throw Exception("Failed to connect", e)
+            throw e
         }
 
         viewModelScope.launch {
@@ -160,7 +160,6 @@ class EditRecipeViewModel(application: Application) : AndroidViewModel(applicati
     fun pasteIngredients(ingredientsString: String) {
         val ingredients = ingredientsString.split("\n").map{ it.trim() }.toCollection(ArrayList())
 
-//        val group = arrayListOf(IngredientsGroup("", ingredients))
         _items.value?.get(0)?.addIngredient(ingredients)
     }
 
