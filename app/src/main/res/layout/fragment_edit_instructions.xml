@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:gravity="top|start"
             android:hint="@string/hint_enter_instructions"
+            android:textColorHint="@color/colorTextLight"
             android:inputType="textMultiLine"
             android:minLines="10"
             android:padding="10dp"

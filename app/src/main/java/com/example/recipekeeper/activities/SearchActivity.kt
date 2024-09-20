@@ -93,7 +93,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.queries.value?.forEach { ingredient ->
             val tagView = TextView(this).apply {
                 text = ingredient
-                setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                setBackgroundResource(R.drawable.rounded_tag_background)
                 setTextColor(ContextCompat.getColor(context, R.color.colorTextLight))
                 setPadding(8, 8, 8, 8)
                 layoutParams = FlexboxLayout.LayoutParams(

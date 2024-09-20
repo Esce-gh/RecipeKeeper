@@ -23,17 +23,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/text_cancel"
-            android:backgroundTint="@color/colorSecondaryVariant"
-            android:textColor="@color/colorTextDark"/>
+            android:text="@string/text_cancel"/>
 
         <Button
             android:id="@+id/buttonOK"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/text_confirm"
-            android:backgroundTint="@color/ColorPrimaryVariant"
-            android:textColor="@color/colorTextDark"/>
+            android:text="@string/text_confirm"/>
     </LinearLayout>
 </LinearLayout>

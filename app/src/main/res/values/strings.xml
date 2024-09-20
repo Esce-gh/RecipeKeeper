@@ -51,7 +51,7 @@
     <string name="text_sort">Sort</string>
     <string name="text_sort_name_asc">Sort: Name Asc.</string>
     <string name="text_sort_name_desc">Sort: Name Desc.</string>
-    <string name="text_sort_date_new">Sort: Newest</string>
+    <string name="text_sort_date_new">Sort: Latest</string>
     <string name="text_sort_date_old">Sort: Oldest</string>
     <string name="text_group">Ingredients group</string>
     <string name="text_add_to_shopping_list">Add to shopping list</string>

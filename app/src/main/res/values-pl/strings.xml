@@ -6,7 +6,7 @@
     <string name="error_msg_failed_connection">Nie udało się połączyć</string>
     <string name="pager_details">Szczegóły</string>
     <string name="pager_ingredients">Składniki</string>
-    <string name="pager_instructions">Intrukcje</string>
+    <string name="pager_instructions">Instrukcje</string>
     <string name="pager_notes">Notatki</string>
     <string name="dialog_recipe_removal_confirmation">Czy na pewno chcesz usunąć przepis?</string>
     <string name="dialog_shopping_list_removal">Czy na pewnoo chcesz usunąć wszystkie produkty?</string>
