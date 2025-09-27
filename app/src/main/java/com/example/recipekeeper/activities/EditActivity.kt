@@ -117,10 +117,10 @@ class EditActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.actionImport -> {
-                showImportDialog()
-                true
-            }
+//            R.id.actionImport -> {
+//                showImportDialog()
+//                true
+//            }
             R.id.actionSave -> {
                 if (viewModel.name.value?.trim().isNullOrEmpty()) {
                     Toast.makeText(this, getString(R.string.toast_invalid_name), Toast.LENGTH_SHORT).show()

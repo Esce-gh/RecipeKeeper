@@ -6,8 +6,4 @@
         android:title="@string/text_save_recipe"
         android:icon="@drawable/ic_save"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/actionImport"
-        android:title="@string/text_import"
-        app:showAsAction="ifRoom" />
 </menu>
